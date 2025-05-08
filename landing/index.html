@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Tools - Analisis Konten & Optimasi SEO</title>
+    <style>
+        :root {
+            --primary: #1fe0c0;
+            --dark-bg: #111827;
+            --darker-bg: #0d1524;
+            --card-bg: #1a2233;
+            --text: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --gradient-start: #1fe0c0;
+            --gradient-mid: #7e3af2;
+            --gradient-end: #ff0080;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: var(--darker-bg);
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            font-size: 24px;
+            color: var(--primary);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+        
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .btn {
+            background-color: var(--primary);
+            color: var(--dark-bg);
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(30, 224, 192, 0.3);
+        }
+        
+        .gradient-line {
+            height: 4px;
+            background: linear-gradient(to right, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
+        }
+        
+        .hero {
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            letter-spacing: -0.025em;
+        }
+        
+        .hero p {
+            font-size: 20px;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+        
+        .dashboard-preview {
+            max-width: 1000px;
+            margin: 40px auto;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .dashboard-preview img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .features {
+            padding: 80px 0;
+            background-color: var(--darker-bg);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            font-size: 36px;
+            margin-bottom: 16px;
+        }
+        
+        .section-title p {
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+        
+        .feature-card p {
+            color: var(--text-secondary);
+        }
+        
+        .cta {
+            padding: 100px 0;
+            text-align: center;
+            background: radial-gradient(circle at center, rgba(31, 224, 192, 0.1), transparent 70%);
+        }
+        
+        .cta h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        .cta p {
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+        
+        footer {
+            background-color: var(--darker-bg);
+            padding: 40px 0;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 24px;
+        }
+        
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+        
+        .copyright {
+            color: var(--text-secondary);
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 10px;">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    SEO Tools
+                </div>
+                <div class="nav-links">
+                    <a href="#">Beranda</a>
+                    <a href="#">Fitur</a>
+                    <a href="#">Harga</a>
+                    <a href="#">Kontak</a>
+                </div>
+                <a href="#" class="btn">Mulai Sekarang</a>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="gradient-line"></div>
+    
+    <section class="hero">
+        <div class="container">
+            <h1>Optimalkan Konten & Tingkatkan Peringkat SEO Anda</h1>
+            <p>SEO Tools menyediakan analisis konten yang komprehensif, pemantauan kata kunci, dan saran optimasi untuk membantu konten Anda mendapatkan peringkat yang lebih baik di mesin pencari.</p>
+            <a href="#" class="btn">Coba Gratis</a>
+            
+            <div class="dashboard-preview">
+                <img src="/api/placeholder/1000/600" alt="SEO Tools Dashboard Preview">
+            </div>
+        </div>
+    </section>
+    
+    <section class="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Fitur Utama</h2>
+                <p>Alat yang Anda butuhkan untuk meningkatkan strategi SEO Anda</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Analisis Konten</h3>
+                    <p>Analisis konten secara mendalam untuk menilai kualitas SEO dan memberikan saran perbaikan.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Tracking Kata Kunci</h3>
+                    <p>Pantau peringkat kata kunci target Anda dan dapatkan wawasan tentang persaingan.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3>Laporan Aktivitas</h3>
+                    <p>Dapatkan laporan aktivitas konten dalam 7 hari terakhir untuk melacak kinerja Anda.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>SEO Meter</h3>
+                    <p>Ukur skor SEO konten Anda dan bandingkan dengan konten kompetitor.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Dashboard Responsif</h3>
+                    <p>Akses dan kelola konten Anda dari perangkat mana pun dengan antarmuka yang responsif.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Analisis Cepat</h3>
+                    <p>Dapatkan hasil analisis konten secara instan dengan satu klik tombol.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="cta">
+        <div class="container">
+            <h2>Siap Meningkatkan Peringkat SEO Anda?</h2>
+            <p>Mulai gunakan SEO Tools hari ini dan lihat peningkatan signifikan dalam kinerja konten dan peringkat SEO Anda.</p>
+            <a href="#" class="btn">Analyze Your First Content</a>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="#">Tentang Kami</a>
+                    <a href="#">Kebijakan Privasi</a>
+                    <a href="#">Syarat & Ketentuan</a>
+                    <a href="#">Bantuan</a>
+                </div>
+                <div class="copyright">
+                    © 2025 SEO Tools. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

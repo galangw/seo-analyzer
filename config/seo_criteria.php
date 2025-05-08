@@ -11,9 +11,9 @@ return [
                 ],
                 'title_length' => [
                     'weight' => 0.30, // 6% of total
-                    'min' => 30,
-                    'max' => 60,
-                    'description' => 'Title length should be between 30-60 characters',
+                    'min' => 40,
+                    'max' => 95,
+                    'description' => 'Title length should be between 75-95 characters, with 40-74 or 95-120 being acceptable',
                 ],
             ],
         ],
@@ -21,14 +21,14 @@ return [
             'weight' => 0.05,
             'sub_criteria' => [
                 'keyword_exists' => [
-                    'weight' => 0.60, // 3% of total
+                    'weight' => 0.50, // 3% of total
                     'description' => 'Target keyword must exist in meta description',
                 ],
                 'description_length' => [
-                    'weight' => 0.40, // 2% of total
-                    'min' => 120,
+                    'weight' => 0.50, // 2% of total
+                    'min' => 100,
                     'max' => 160,
-                    'description' => 'Meta description length should be between 120-160 characters',
+                    'description' => 'Meta description length should be between 146-160 characters, with 100-145 being acceptable',
                 ],
             ],
         ],
@@ -37,9 +37,9 @@ return [
             'sub_criteria' => [
                 'word_count' => [
                     'weight' => 0.30, // 22.5% of total
-                    'min' => 300,
-                    'good' => 600,
-                    'description' => 'Content should have at least 300 words, ideally 600+',
+                    'min' => 700,
+                    'good' => 1200,
+                    'description' => 'Content should have at least 700 words, ideally 1200+',
                 ],
                 'keyword_first_paragraph' => [
                     'weight' => 0.10, // 7.5% of total
@@ -55,15 +55,15 @@ return [
                 ],
                 'internal_links' => [
                     'weight' => 0.10, // 7.5% of total
-                    'min' => 1,
-                    'good' => 3,
-                    'description' => 'Content should have at least one internal link',
+                    'min' => 0.5,
+                    'good' => 2.0,
+                    'description' => 'Internal link percentage should be between 0.5% and 2% of content',
                 ],
                 'keyword_density' => [
                     'weight' => 0.30, // 22.5% of total
-                    'min' => 0.5,
-                    'max' => 2.5,
-                    'description' => 'Keyword density should be between 0.5% and 2.5%',
+                    'min' => 1.0,
+                    'max' => 2.0,
+                    'description' => 'Keyword density should be between 1% and 2%, with 0-1% or 2-4% being acceptable',
                 ],
             ],
         ],

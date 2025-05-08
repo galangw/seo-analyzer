@@ -35,7 +35,25 @@ class ApiController extends Controller
                 $request->target_keyword
             );
 
-            return response()->json($analysisResult, 200);
+            return response()->json([
+                'success' => true,
+                'score' => $analysisResult['score'],
+                'title_score' => $analysisResult['title_score'],
+                'meta_score' => $analysisResult['meta_score'],
+                'content_score' => $analysisResult['content_score'],
+                'title_feedback' => $analysisResult['title_feedback'],
+                'meta_feedback' => $analysisResult['meta_feedback'],
+                'content_feedback' => $analysisResult['content_feedback'],
+            ], 200);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Validation error
+            Log::error('SEO Analysis Validation Error: ' . $e->getMessage());
+            
+            return response()->json([
+                'success' => false,
+                'error' => 'Validation error',
+                'message' => $e->errors(),
+            ], 422);
         } catch (\Exception $e) {
             // Log the error for debugging
             Log::error('SEO Analysis Error: ' . $e->getMessage());
@@ -43,6 +61,7 @@ class ApiController extends Controller
 
             // Return a JSON error response
             return response()->json([
+                'success' => false,
                 'error' => 'An error occurred while analyzing the content',
                 'message' => $e->getMessage()
             ], 500);

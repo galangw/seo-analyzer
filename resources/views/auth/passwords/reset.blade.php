@@ -28,6 +28,21 @@
                         </div>
 
                         <div class="row mb-3">
+                            <label for="verification_code" class="col-md-4 col-form-label text-md-end">{{ __('WhatsApp Verification Code') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="verification_code" type="text" class="form-control @error('verification_code') is-invalid @enderror" name="verification_code" required>
+                                <div class="form-text">Enter the code sent to your WhatsApp</div>
+
+                                @error('verification_code')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
                             <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
 
                             <div class="col-md-6">

@@ -43,9 +43,30 @@ class SeoResultController extends Controller
     {
         $this->authorize('update', $content);
 
-        $seoResult = $this->seoAnalyzerService->analyzeContent($content);
+        try {
+            $seoResult = $this->seoAnalyzerService->analyzeContent($content);
+            
+            // Handle AJAX requests
+            if (request()->ajax() || request()->wantsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'redirect' => route('seo-results.show', $seoResult->id)
+                ]);
+            }
 
-        return redirect()->route('seo-results.show', $seoResult->id)
-            ->with('success', 'Content reanalyzed successfully!');
+            return redirect()->route('seo-results.show', $seoResult->id)
+                ->with('success', 'Content reanalyzed successfully!');
+        } catch (\Exception $e) {
+            \Log::error('Reanalyze error: ' . $e->getMessage());
+            
+            if (request()->ajax() || request()->wantsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'An error occurred: ' . $e->getMessage()
+                ], 500);
+            }
+            
+            return back()->withErrors(['error' => 'An error occurred: ' . $e->getMessage()]);
+        }
     }
 }

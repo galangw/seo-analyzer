@@ -35,4 +35,15 @@ return [
         ],
     ],
 
+    'mailgun' => [
+        'domain' => env('MAILGUN_DOMAIN'),
+        'secret' => env('MAILGUN_SECRET'),
+        'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
+        'scheme' => 'https',
+    ],
+
+    'gemini' => [
+        'api_key' => env('GEMINI_API_KEY', 'AIzaSyBevCK6XWQEM6f4TfLobXp6B5TEbFRoDc4'),
+    ],
+
 ];

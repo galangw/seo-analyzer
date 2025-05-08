@@ -1,250 +1,202 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" data-bs-theme="dark">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ config('app.name', 'SEO Tools') }}</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- Quill Editor -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    
+    <link href="/assets/style.css" rel="stylesheet">
     <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: "Lexend", sans-serif;
+        /* Progress Circle Styles */
+        .progress-circle {
+            position: relative;
+            height: 120px;
+            width: 120px;
+            border-radius: 50%;
+            display: inline-block;
+            background-color: #f0f0f0;
         }
-
-        .wrapper {
-            display: flex;
-            width: 100%;
+        .progress-circle .progress-circle-left,
+        .progress-circle .progress-circle-right {
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: 50%;
+            overflow: hidden;
         }
-
-        /* Sidebar Style */
-        .sidebar {
-            width: 250px;
-            position: fixed;
+        .progress-circle .progress-circle-left { left: 0; }
+        .progress-circle .progress-circle-right { right: 0; }
+        .progress-circle .progress-circle-value {
+            position: absolute;
             top: 0;
             left: 0;
-            height: 100vh;
-            z-index: 999;
-            background: #4a90e2;
-            color: #fff;
-            transition: all 0.3s;
-        }
-
-        .sidebar-header {
-            padding: 20px;
-            text-align: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .sidebar .nav-link {
-            color: #fff;
-            padding: 15px 25px;
-            transition: all 0.3s;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            font-size: 24px;
+            font-weight: bold;
             display: flex;
             align-items: center;
+            justify-content: center;
+            background: var(--bs-body-bg);
+            border: 8px solid #f0f0f0;
         }
-
-        .sidebar .nav-link:hover {
-            background: #357abd;
+        .progress-circle .progress-circle-value div {
+            font-size: 26px;
+            font-weight: bold;
         }
-
-        .sidebar .nav-link i {
-            margin-right: 10px;
-            width: 20px;
-            text-align: center;
+        .progress-circle .progress-circle-value div span {
+            font-size: 16px;
         }
-
-        /* Main Content Style */
-        .content {
-            width: calc(100% - 250px);
-            margin-left: 250px;
-            padding: 20px;
+        .progress-circle .progress-circle-bar {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            transform: rotate(0deg);
         }
-
-        /* Dashboard Cards */
-        .dashboard-card {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s;
+        .progress-circle .progress-circle-left .progress-circle-bar {
+            left: 100%;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            transform-origin: center left;
         }
-
-        .dashboard-card:hover {
-            transform: translateY(-5px);
+        .progress-circle .progress-circle-right .progress-circle-bar {
+            left: -100%;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            transform-origin: center right;
         }
-
-        .stat-value {
-            font-size: 24px;
-            font-weight: 600;
-            color: #4a90e2;
-        }
-
-        /* History Table */
-        .history-table {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
-        }
-
-        .table {
-            margin-bottom: 0;
-        }
-
-        .table th {
-            border-top: none;
-            font-weight: 600;
-        }
-
-        .badge {
-            padding: 8px 12px;
-            border-radius: 20px;
-        }
-
-        /* Cards */
-        .card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
-            margin-bottom: 20px;
-        }
-
-        .card-header {
-            background-color: #4a90e2;
-            color: white;
-            border-radius: 15px 15px 0 0 !important;
-            padding: 15px 20px;
-        }
-
-        .btn-primary {
-            background-color: #4a90e2;
-            border-color: #4a90e2;
-        }
-
-        .btn-primary:hover {
-            background-color: #357abd;
-            border-color: #357abd;
-            transform: translateY(-2px);
-        }
-
-        /* Quill Editor */
-        .ql-toolbar {
-            border-top-left-radius: 4px;
-            border-top-right-radius: 4px;
-            background-color: #f8f9fa;
-            border-color: #dee2e6;
-        }
-
-        .ql-container {
-            border-bottom-left-radius: 4px;
-            border-bottom-right-radius: 4px;
-            border-color: #dee2e6;
-            font-family: inherit;
-            min-height: 400px;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .sidebar {
-                margin-left: -250px;
-            }
-
-            .sidebar.active {
-                margin-left: 0;
-            }
-
-            .content {
-                width: 100%;
-                margin-left: 0;
-            }
-
-            .content.active {
-                margin-left: 250px;
-            }
-        }
+        .progress-success .progress-circle-bar { background-color: var(--bs-success); }
+        .progress-warning .progress-circle-bar { background-color: var(--bs-warning); }
+        .progress-danger .progress-circle-bar { background-color: var(--bs-danger); }
     </style>
+   @yield('head')
 </head>
 
 <body>
-    <div class="wrapper">
+    <div class="d-flex">
         <!-- Sidebar -->
-        <nav class="sidebar">
-            <div class="sidebar-header">
-                <h4>SEO Tools</h4>
+        @if(Auth::check())
+        <nav id="sidebar" class="sidebar py-3">
+            <div class="px-3 mb-4">
+                <div class="d-flex align-items-center justify-content-between">
+                    <h4 class="m-0 text-primary fw-bold">SEO Tools</h4>
+                    <div class="theme-controls">
+                        <button id="navbarToggleBtn" class="navbar-toggle-btn" type="button" aria-label="Toggle Navigation">
+                            <i class="bi bi-layout-sidebar"></i>
+                        </button>
+                        <div class="theme-toggle">
+                            <i class="bi bi-sun-fill theme-icon" id="lightThemeIcon"></i>
+                            <i class="bi bi-moon-fill theme-icon d-none" id="darkThemeIcon"></i>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a href="{{ route('dashboard') }}"
-                        class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                        <i class="fas fa-chart-line"></i>
-                        Dashboard
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('contents.create') }}"
-                        class="nav-link {{ request()->routeIs('contents.create') ? 'active' : '' }}">
-                        <i class="fas fa-search"></i>
-                        SEO Meter
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('contents.index') }}"
-                        class="nav-link {{ request()->routeIs('contents.index') ? 'active' : '' }}">
-                        <i class="fas fa-file-alt"></i>
-                        My Content
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('seo-results.index') }}"
-                        class="nav-link {{ request()->routeIs('seo-results.index') ? 'active' : '' }}">
-                        <i class="fas fa-history"></i>
-                        History
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-cog"></i>
-                        Settings
-                    </a>
-                </li>
-                @if (Auth::check())
-                    <li class="nav-item mt-auto">
-                        <a href="#" class="nav-link"
-                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                            <i class="fas fa-sign-out-alt"></i>
-                            Logout
+            
+            <div class="nav flex-column">
+                <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                    <i class="bi bi-graph-up"></i> Dashboard
+                </a>
+                <a href="{{ route('contents.create') }}" class="nav-link {{ request()->routeIs('contents.create') ? 'active' : '' }}">
+                    <i class="bi bi-search"></i> SEO Meter
+                </a>
+                <a href="{{ route('contents.index') }}" class="nav-link {{ request()->routeIs('contents.index') ? 'active' : '' }}">
+                    <i class="bi bi-file-earmark-text"></i> My Content
+                </a>
+                <!-- <a href="{{ route('seo-results.index') }}" class="nav-link {{ request()->routeIs('seo-results.index') ? 'active' : '' }}">
+                    <i class="bi bi-clock-history"></i> History
+                </a> -->
+                <a href="#" class="nav-link">
+                    <i class="bi bi-gear"></i> Settings
+                </a>
+            </div>
+            
+            @if (Auth::check())
+            <div class="sidebar-user mt-auto">
+                <div class="d-flex align-items-center">
+                    <div class="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; cursor: pointer;" onclick="window.location.href='{{ route('profile.edit') }}'">
+                        <span>{{ substr(Auth::user()->name, 0, 1) }}</span>
+                    </div>
+                    <div class="ms-3">
+                        <a href="{{ route('profile.edit') }}" class="text-primary text-decoration-none">
+                            <p class="m-0 fw-semibold">{{ Auth::user()->name }}</p>
+                        </a>
+                        <a href="#" class="text-muted small text-decoration-none" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <i class="bi bi-box-arrow-right"></i> Logout
                         </a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                             @csrf
                         </form>
-                    </li>
-                @endif
-            </ul>
-        </nav>
-
-        <!-- Content -->
-        <div class="content">
-            @if (session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                 </div>
+            </div>
             @endif
+        </nav>
+        @endif
+        <!-- Main Content -->
+        <main id="content" class="content {{ !Auth::check() ? 'content-full' : '' }}">
+            <!-- Fixed position toggle button that appears when sidebar is collapsed -->
+            @if(Auth::check())
+            <button id="fixedNavbarToggleBtn" class="fixed-toggle-btn" type="button" aria-label="Show Navigation">
+                <i class="bi bi-layout-sidebar-inset"></i>
+            </button>
+            @endif
+            
+            <!-- Toast Container for Notifications -->
+            <div class="position-fixed top-0 end-0 p-3" style="z-index: 1050">
+                <div id="notificationToast" class="toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            @if (session('success'))
+                                {{ session('success') }}
+                            @endif
+                        </div>
+                        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
 
             @yield('content')
-        </div>
+            
+            
+        </main>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Quill Editor -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+    <script src="https://unpkg.com/quill-html-edit-button@2.2.7/dist/quill.htmlEditButton.min.js"></script>
+
+    
     @yield('scripts')
+    <script>
+        // Pass Laravel variables to JavaScript
+        window.appConfig = {
+            userLoggedIn: {{ Auth::check() ? 'true' : 'false' }},
+            hasSuccessMessage: {{ session('success') ? 'true' : 'false' }},
+            successMessage: "{{ session('success') ?? '' }}"
+        };
+    </script>
+    <script src="/assets/script.js"></script>
+    
 </body>
 
 </html>

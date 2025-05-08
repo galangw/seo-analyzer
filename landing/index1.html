@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEO Tools - Optimize Your Content</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Outfit Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <!-- AOS Animation Library -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #00E6B5;
+      --dark-bg: #111827;
+      --card-bg: #1F2937;
+      --text-light: #F9FAFB;
+      --text-gray: #9CA3AF;
+      --gradient-start: #00E6B5;
+      --gradient-mid: #9333EA;
+      --gradient-end: #FF3D71;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: var(--dark-bg);
+      color: var(--text-light);
+      overflow-x: hidden;
+    }
+
+    .navbar {
+      background-color: rgba(17, 24, 39, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 20px 0;
+      transition: all 0.3s ease;
+    }
+
+    .navbar.scrolled {
+      padding: 12px 0;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar-brand span {
+      color: var(--primary);
+      margin-right: 5px;
+    }
+
+    .navbar-nav .nav-link {
+      color: var(--text-light);
+      font-weight: 500;
+      margin: 0 12px;
+      padding: 8px 2px;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .navbar-nav .nav-link:after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gradient-start), var(--gradient-mid));
+      bottom: 0;
+      left: 0;
+      transition: width 0.3s ease;
+    }
+
+    .navbar-nav .nav-link:hover:after {
+      width: 100%;
+    }
+
+    .navbar-nav .nav-link:hover {
+      color: var(--primary);
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, var(--gradient-start), var(--gradient-mid));
+      border: none;
+      padding: 10px 25px;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .btn-primary:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, var(--gradient-mid), var(--gradient-end));
+      transition: all 0.5s ease;
+      z-index: -1;
+    }
+
+    .btn-primary:hover:before {
+      width: 100%;
+    }
+
+    .hero {
+      padding: 150px 0 100px;
+      position: relative;
+    }
+
+    .hero:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at top right, rgba(0, 230, 181, 0.1), transparent 50%);
+      z-index: 0;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: var(--text-gray);
+      margin-bottom: 30px;
+      max-width: 600px;
+    }
+
+    .hero-img {
+      position: relative;
+    }
+
+    .hero-img img {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      transition: all 0.5s ease;
+    }
+
+    .hero-img:hover img {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(0, 230, 181, 0.2);
+    }
+
+    .gradient-line {
+      height: 3px;
+      background: linear-gradient(90deg, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
+      margin: 80px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gradient-line:before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+      transform: translateX(-100%);
+      animation: shine 3s infinite;
+    }
+
+    @keyframes shine {
+      100% {
+        transform: translateX(100%);
+      }
+    }
+
+    .features {
+      padding: 80px 0;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section-title h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+
+    .section-title p {
+      color: var(--text-gray);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .feature-card {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+      margin-bottom: 30px;
+      transition: all 0.5s ease;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gradient-start), var(--gradient-mid));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.5s ease;
+    }
+
+    .feature-card:hover:before {
+      transform: scaleX(1);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .feature-icon {
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(135deg, rgba(0, 230, 181, 0.1), rgba(147, 51, 234, 0.1));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      transition: all 0.5s ease;
+    }
+
+    .feature-card:hover .feature-icon {
+      transform: rotateY(180deg);
+    }
+
+    .feature-icon i {
+      font-size: 1.8rem;
+      color: var(--primary);
+    }
+
+    .feature-card h3 {
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    .feature-card p {
+      color: var(--text-gray);
+      margin-bottom: 0;
+    }
+
+    .dashboard-preview {
+      padding: 80px 0;
+      position: relative;
+    }
+
+    .dashboard-preview:before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at bottom left, rgba(147, 51, 234, 0.1), transparent 50%);
+      z-index: 0;
+    }
+
+    .dashboard-image {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    .dashboard-image img {
+      width: 100%;
+      transition: all 0.5s ease;
+    }
+
+    .dashboard-image:hover img {
+      transform: scale(1.02);
+    }
+
+    .stat-card {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    .stat-card:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, rgba(0, 230, 181, 0.05), rgba(147, 51, 234, 0.05));
+      z-index: 0;
+    }
+
+    .stat-card h3 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, var(--gradient-start), var(--gradient-mid));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      position: relative;
+      z-index: 1;
+    }
+
+    .stat-card p {
+      color: var(--text-gray);
+      margin-bottom: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .how-it-works {
+      padding: 80px 0;
+    }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 50px;
+    }
+
+    .step-number {
+      background: linear-gradient(135deg, var(--gradient-start), var(--gradient-mid));
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      margin-right: 20px;
+      flex-shrink: 0;
+    }
+
+    .step-content h3 {
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .step-content p {
+      color: var(--text-gray);
+    }
+
+    .cta {
+      padding: 100px 0;
+      text-align: center;
+      background: linear-gradient(135deg, rgba(0, 230, 181, 0.05), rgba(147, 51, 234, 0.05));
+      border-radius: 20px;
+      margin-bottom: 80px;
+    }
+
+    .cta h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .cta p {
+      color: var(--text-gray);
+      max-width: 600px;
+      margin: 0 auto 30px;
+    }
+
+    .floating {
+      animation: floating 3s ease-in-out infinite;
+    }
+
+    @keyframes floating {
+      0% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-15px);
+      }
+      100% {
+        transform: translateY(0);
+      }
+    }
+
+    .footer {
+      padding: 50px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .footer-logo span {
+      color: var(--primary);
+      margin-right: 5px;
+    }
+
+    .footer-text {
+      color: var(--text-gray);
+      margin-bottom: 20px;
+    }
+
+    .footer-links h4 {
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .footer-links ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-links ul li {
+      margin-bottom: 10px;
+    }
+
+    .footer-links ul li a {
+      color: var(--text-gray);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links ul li a:hover {
+      color: var(--primary);
+    }
+
+    .social-links {
+      display: flex;
+      gap: 15px;
+    }
+
+    .social-links a {
+      color: var(--text-gray);
+      font-size: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .social-links a:hover {
+      color: var(--primary);
+      transform: translateY(-5px);
+    }
+
+    .copyright {
+      text-align: center;
+      color: var(--text-gray);
+      margin-top: 30px;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#"><span><i class="fas fa-chart-line"></i></span> SEO Tools</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#features">Features</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#dashboard">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#how-it-works">How It Works</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#pricing">Pricing</a>
+          </li>
+          <li class="nav-item ms-lg-3">
+            <a class="btn btn-primary" href="#get-started">Get Started</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6" data-aos="fade-right" data-aos-duration="1000">
+          <h1>Optimize Your Content with Smart SEO Tools</h1>
+          <p>Track your SEO performance, analyze your content, and discover high-ranking keywords to boost your website's visibility in search engines.</p>
+          <a href="#get-started" class="btn btn-primary me-3">Get Started Free</a>
+          <a href="#demo" class="btn btn-outline-light">See Demo</a>
+        </div>
+        <div class="col-lg-6" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
+          <div class="hero-img floating">
+            <img src="https://api.placeholder.com/900x600" alt="SEO Dashboard" class="img-fluid">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gradient-line"></div>
+
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-title" data-aos="fade-up">
+        <h2>Powerful Features</h2>
+        <p>Our SEO tools provide everything you need to optimize your content and improve your search rankings.</p>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <h3>SEO Score Analysis</h3>
+            <p>Get a comprehensive analysis of your content's SEO performance with actionable recommendations for improvement.</p>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-keyboard"></i>
+            </div>
+            <h3>Keyword Tracking</h3>
+            <p>Identify and track high-performing keywords to optimize your content for better search engine rankings.</p>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-file-alt"></i>
+            </div>
+            <h3>Content Analysis</h3>
+            <p>Analyze your content's readability, structure, and SEO compliance to make data-driven improvements.</p>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="400">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-chart-bar"></i>
+            </div>
+            <h3>Performance Tracking</h3>
+            <p>Monitor your content's performance over time with detailed analytics and visualizations.</p>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="500">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-lightbulb"></i>
+            </div>
+            <h3>Smart Recommendations</h3>
+            <p>Receive personalized recommendations to improve your content's SEO performance and engagement.</p>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="600">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-trophy"></i>
+            </div>
+            <h3>Competitor Analysis</h3>
+            <p>Benchmark your content against competitors to identify opportunities for improvement and growth.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dashboard Preview Section -->
+  <section class="dashboard-preview" id="dashboard">
+    <div class="container">
+      <div class="section-title" data-aos="fade-up">
+        <h2>Intuitive Dashboard</h2>
+        <p>Our user-friendly dashboard provides a comprehensive overview of your SEO performance at a glance.</p>
+      </div>
+
+      <div class="row align-items-center">
+        <div class="col-lg-7" data-aos="fade-right" data-aos-duration="1000">
+          <div class="dashboard-image">
+            <img src="https://api.placeholder.com/1000x700" alt="SEO Dashboard" class="img-fluid">
+          </div>
+        </div>
+
+        <div class="col-lg-5" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
+          <div class="stat-card" data-aos="fade-up" data-aos-delay="300">
+            <h3>100%</h3>
+            <p>Increase in Search Visibility</p>
+          </div>
+
+          <div class="stat-card" data-aos="fade-up" data-aos-delay="400">
+            <h3>50+</h3>
+            <p>SEO Metrics Tracked</p>
+          </div>
+
+          <div class="stat-card" data-aos="fade-up" data-aos-delay="500">
+            <h3>24/7</h3>
+            <p>Real-time Performance Monitoring</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gradient-line"></div>
+
+  <!-- How It Works Section -->
+  <section class="how-it-works" id="how-it-works">
+    <div class="container">
+      <div class="section-title" data-aos="fade-up">
+        <h2>How It Works</h2>
+        <p>Optimize your content in just a few simple steps with our SEO tools.</p>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-6 offset-lg-3">
+          <div class="step" data-aos="fade-up" data-aos-delay="100">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h3>Add Your Content</h3>
+              <p>Upload your content or provide a URL to analyze your content's SEO performance.</p>
+            </div>
+          </div>
+
+          <div class="step" data-aos="fade-up" data-aos-delay="200">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h3>Get Comprehensive Analysis</h3>
+              <p>Receive a detailed analysis of your content's SEO performance, including readability, keyword usage, and more.</p>
+            </div>
+          </div>
+
+          <div class="step" data-aos="fade-up" data-aos-delay="300">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <h3>Implement Recommendations</h3>
+              <p>Follow the actionable recommendations to improve your content's SEO performance and rankings.</p>
+            </div>
+          </div>
+
+          <div class="step" data-aos="fade-up" data-aos-delay="400">
+            <div class="step-number">4</div>
+            <div class="step-content">
+              <h3>Track Your Progress</h3>
+              <p>Monitor your content's performance over time and make data-driven improvements.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section class="features" id="pricing">
+    <div class="container">
+      <div class="section-title" data-aos="fade-up">
+        <h2>Simple, Transparent Pricing</h2>
+        <p>Choose the plan that best fits your needs. All plans include core features.</p>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+          <div class="feature-card text-center">
+            <h3>Basic</h3>
+            <div class="my-4">
+              <span style="font-size: 3rem; font-weight: 700;">Free</span>
+              <p class="text-gray">Forever</p>
+            </div>
+            <ul class="list-unstyled text-start mb-4">
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> 5 Content Analyses/month</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> Basic SEO Metrics</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> Limited Keyword Tracking</li>
+              <li class="mb-2 text-gray"><i class="fas fa-times me-2"></i> Content Performance History</li>
+              <li class="mb-2 text-gray"><i class="fas fa-times me-2"></i> Competitor Analysis</li>
+            </ul>
+            <a href="#" class="btn btn-outline-light w-100">Get Started</a>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+          <div class="feature-card text-center" style="transform: scale(1.05); border: 2px solid var(--primary);">
+            <div class="position-absolute" style="top: -15px; left: 50%; transform: translateX(-50%); background: linear-gradient(90deg, var(--gradient-start), var(--gradient-mid)); padding: 5px 15px; border-radius: 20px; font-weight: 600;">Popular</div>
+            <h3>Pro</h3>
+            <div class="my-4">
+              <span style="font-size: 3rem; font-weight: 700;">$29</span>
+              <p class="text-gray">per month</p>
+            </div>
+            <ul class="list-unstyled text-start mb-4">
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> Unlimited Content Analyses</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> Advanced SEO Metrics</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> Unlimited Keyword Tracking</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> 6 Months Content History</li>
+              <li class="mb-2 text-gray"><i class="fas fa-times me-2"></i> Competitor Analysis</li>
+            </ul>
+            <a href="#" class="btn btn-primary w-100">Get Started</a>
+          </div>
+        </div>
+
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+          <div class="feature-card text-center">
+            <h3>Business</h3>
+            <div class="my-4">
+              <span style="font-size: 3rem; font-weight: 700;">$79</span>
+              <p class="text-gray">per month</p>
+            </div>
+            <ul class="list-unstyled text-start mb-4">
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> Everything in Pro</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> Premium SEO Tools</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> Team Collaboration</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> Unlimited Content History</li>
+              <li class="mb-2"><i class="fas fa-check text-primary me-2"></i> Competitor Analysis</li>
+            </ul>
+            <a href="#" class="btn btn-outline-light w-100">Get Started</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta" id="get-started" data-aos="fade-up">
+    <div class="container">
+      <h2>Ready to Boost Your SEO Performance?</h2>
+      <p>Start optimizing your content today with our powerful SEO tools and see the difference in your search rankings.</p>
+      <a href="#" class="btn btn-primary">Get Started Free</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="footer-logo"><span><i class="fas fa-chart-line"></i></span> SEO Tools</div>
+          <p class="footer-text">Powerful SEO tools to optimize your content and improve your search rankings.</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-md-4 mt-4 mt-lg-0">
+          <div class="footer-links">
+            <h4>Product</h4>
+            <ul>
+              <li><a href="#">Features</a></li>
+              <li><a href="#">Pricing</a></li>
+              <li><a href="#">Testimonials</a></li>
+              <li><a href="#">FAQ</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-md-4 mt-4 mt-lg-0">
+          <div class="footer-links">
+            <h4>Company</h4>
+            <ul>
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">Blog</a></li>
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-md-4 mt-4 mt-lg-0">
+          <div class="footer-links">
+            <h4>Subscribe to Our Newsletter</h4>
+            <p class="footer-text">Stay updated with the latest SEO tips and tools.</p>
+            <form class="mt-3">
+              <div class="input-group">
+                <input type="email" class="form-control" placeholder="Your Email" style="background: var(--card-bg); border: 1px solid rgba(255,255,255,0.1); color: var(--text-light);">
+                <button class="btn btn-primary" type="submit">Subscribe</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="copyright">
+        <p>&copy; 2025 SEO Tools. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <!-- AOS Animation Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script>
+    // Initialize AOS
+    AOS.init({
+      duration: 800,
+      once: true
+    });
+
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+      const navbar = document.querySelector('.navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+  </script>
+</body>
+</html>

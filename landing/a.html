@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Tools - Advanced SEO Analysis and Optimization</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <style>
+        :root {
+            --primary-color: #00c9a7;
+            --primary-hover: #00b897;
+            --dark-bg: #121212;
+            --card-bg: #1e1e1e;
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--dark-bg);
+            color: #fff;
+        }
+
+        .navbar {
+            background-color: var(--card-bg) !important;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            border-color: var(--primary-hover);
+        }
+
+        .text-primary {
+            color: var(--primary-color) !important;
+        }
+
+        .border-gradient {
+            position: relative;
+        }
+
+        .border-gradient::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #00c9a7, #6c6fff, #ff4088);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(0, 201, 167, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .feature-icon i {
+            font-size: 28px;
+            color: var(--primary-color);
+        }
+
+        .dashboard-preview {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(18, 18, 18, 0.9)), url('https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1404&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .testimonial-card {
+            backdrop-filter: blur(10px);
+            background-color: rgba(30, 30, 30, 0.7);
+        }
+
+        .stat-card {
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            background-color: rgba(30, 30, 30, 0.7);
+            backdrop-filter: blur(5px);
+            border: 1px solid var(--border-color);
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #00c9a7, #6c6fff);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold d-flex align-items-center" href="#">
+                <i class="bi bi-graph-up-arrow me-2 text-primary"></i>
+                <span>SEO Tools</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#features">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#demo">Demo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#pricing">Pricing</a>
+                    </li>
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn btn-primary px-4" href="#signup">Try It Free</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient py-5">
+        <div class="container py-5">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <h1 class="display-4 fw-bold mb-4">Boost Your Website Rankings with <span class="text-primary">SEO Tools</span></h1>
+                    <p class="lead mb-4">Analyze, optimize, and monitor your content to dominate search engine results with our comprehensive SEO analysis toolkit.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#signup" class="btn btn-primary btn-lg px-4">Start Free Trial</a>
+                        <a href="#demo" class="btn btn-outline-light btn-lg px-4">See How It Works</a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card dashboard-preview">
+                        <img src="/api/placeholder/800/500" alt="SEO Tools Dashboard" class="img-fluid">
+                        <div class="card-body text-center p-3">
+                            <h5 class="m-0">Powerful SEO Dashboard</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Stats -->
+    <section class="py-5 bg-dark">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="stat-card">
+                        <i class="bi bi-graph-up-arrow display-4 text-primary mb-3"></i>
+                        <h3 class="mb-2">30%+</h3>
+                        <p class="mb-0 text-secondary">Average Ranking Improvement</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-card">
+                        <i class="bi bi-search-heart display-4 text-primary mb-3"></i>
+                        <h3 class="mb-2">100+</h3>
+                        <p class="mb-0 text-secondary">SEO Metrics Analyzed</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-card">
+                        <i class="bi bi-people display-4 text-primary mb-3"></i>
+                        <h3 class="mb-2">10,000+</h3>
+                        <p class="mb-0 text-secondary">Satisfied Users</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-5">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Powerful SEO Features</h2>
+                <p class="lead text-secondary">All the tools you need to optimize your content and improve rankings</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-gradient">
+                        <div class="card-body p-4">
+                            <div class="feature-icon">
+                                <i class="bi bi-search"></i>
+                            </div>
+                            <h4>SEO Meter</h4>
+                            <p class="text-secondary">Analyze your content in real-time and get instant feedback on how to optimize it for better search engine rankings.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-gradient">
+                        <div class="card-body p-4">
+                            <div class="feature-icon">
+                                <i class="bi bi-graph-up"></i>
+                            </div>
+                            <h4>Performance Tracking</h4>
+                            <p class="text-secondary">Track your SEO performance over time with detailed analytics and visual reports.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-gradient">
+                        <div class="card-body p-4">
+                            <div class="feature-icon">
+                                <i class="bi bi-tags"></i>
+                            </div>
+                            <h4>Keyword Analysis</h4>
+                            <p class="text-secondary">Find and track the best keywords for your content to maximize traffic and conversions.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-gradient">
+                        <div class="card-body p-4">
+                            <div class="feature-icon">
+                                <i class="bi bi-file-earmark-text"></i>
+                            </div>
+                            <h4>Content Management</h4>
+                            <p class="text-secondary">Organize and manage all your content in one place for easier optimization and tracking.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-gradient">
+                        <div class="card-body p-4">
+                            <div class="feature-icon">
+                                <i class="bi bi-speedometer2"></i>
+                            </div>
+                            <h4>Site Audit</h4>
+                            <p class="text-secondary">Comprehensive site audits to identify and fix technical SEO issues that might be hurting your rankings.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-gradient">
+                        <div class="card-body p-4">
+                            <div class="feature-icon">
+                                <i class="bi bi-lightning"></i>
+                            </div>
+                            <h4>AI-Powered Suggestions</h4>
+                            <p class="text-secondary">Get intelligent recommendations to improve your content's SEO performance based on the latest algorithms.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Preview Section -->
+    <section id="demo" class="py-5 bg-black">
+        <div class="container py-4">
+            <div class="row align-items-center">
+                <div class="col-lg-5 mb-4 mb-lg-0">
+                    <h2 class="fw-bold mb-4">Intuitive Dashboard That Makes SEO Simple</h2>
+                    <p class="mb-4">Our easy-to-use dashboard gives you a complete overview of your SEO performance at a glance. Monitor your content, track keywords, and get actionable insights - all in one place.</p>
+
+                    <div class="mb-4">
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="bg-primary rounded-circle p-1 mt-1 me-3">
+                                <i class="bi bi-check-lg"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-1">Real-time Analysis</h5>
+                                <p class="text-secondary mb-0">Get instant feedback as you create content</p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="bg-primary rounded-circle p-1 mt-1 me-3">
+                                <i class="bi bi-check-lg"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-1">Performance Tracking</h5>
+                                <p class="text-secondary mb-0">Monitor your SEO progress over time</p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-start">
+                            <div class="bg-primary rounded-circle p-1 mt-1 me-3">
+                                <i class="bi bi-check-lg"></i>
+                            </div>
+                            <div>
+                                <h5 class="mb-1">Actionable Insights</h5>
+                                <p class="text-secondary mb-0">Clear recommendations to improve rankings</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a href="#signup" class="btn btn-primary">Start Optimizing Today</a>
+                </div>
+                <div class="col-lg-7">
+                    <div class="card dashboard-preview">
+                        <img src="/api/placeholder/1000/600" alt="SEO Tools Dashboard Preview" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="py-5">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">How SEO Tools Works</h2>
+                <p class="lead text-secondary">Three simple steps to improve your search engine rankings</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 text-center">
+                        <div class="card-body p-4">
+                            <div class="rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center mx-auto mb-4" style="width: 80px; height: 80px;">
+                                <h2 class="mb-0 text-primary">1</h2>
+                            </div>
+                            <h4>Analyze Your Content</h4>
+                            <p class="text-secondary">Input your content or connect your website to get a comprehensive SEO analysis.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100 text-center">
+                        <div class="card-body p-4">
+                            <div class="rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center mx-auto mb-4" style="width: 80px; height: 80px;">
+                                <h2 class="mb-0 text-primary">2</h2>
+                            </div>
+                            <h4>Review Recommendations</h4>
+                            <p class="text-secondary">Get detailed insights and actionable suggestions to improve your SEO performance.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100 text-center">
+                        <div class="card-body p-4">
+                            <div class="rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center mx-auto mb-4" style="width: 80px; height: 80px;">
+                                <h2 class="mb-0 text-primary">3</h2>
+                            </div>
+                            <h4>Optimize & Monitor</h4>
+                            <p class="text-secondary">Implement the changes and track your improvement over time using our dashboard.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-5 bg-dark">
+        <div class="container py-4">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Simple, Transparent Pricing</h2>
+                <p class="lead text-secondary">Choose the plan that works best for your needs</p>
+            </div>
+
+            <div class="row g-4 justify-content-center">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100">
+                        <div class="card-body p-4">
+                            <h5 class="text-center mb-4">Starter</h5>
+                            <div class="text-center mb-4">
+                                <span class="display-5 fw-bold">$29</span>
+                                <span class="text-secondary">/month</span>
+                            </div>
+
+                            <ul class="list-unstyled mb-4">
+                                <li class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                    <span>Basic SEO analysis</span>
+                                </li>
+                                <li class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                    <span>Up to 5 websites</span>
+                                </li>
+                                <li class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                    <span>25 content analyses per month</span>
+                                </li>
+                                <li class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                    <span>Basic keyword tracking</span>
+                                </li>
+                                <li class="d-flex align-items-center text-secondary">
+                                    <i class="bi bi-x-circle-fill me-2"></i>
+                                    <span>Advanced recommendations</span>
+                                </li>
+                            </ul>
+
+                            <div class="text-center">
+                                <a href="#signup" class="btn btn-outline-primary w-100">Get Started</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 border-primary">
+                        <div class="card-body p-4">
+                            <div class="text-center">
+                                <span class="badge bg-primary mb-2">Most Popular</span>
+                            </div>
+                            <h5 class="text-center mb-4">Professional</h5>
+                            <div class="text-center mb-4">
+                                <span class="display-5 fw-bold">$79</span>
+                                <span class="text-secondary">/month</span>
+                            </div>
+
+                            <ul class="list-unstyled mb-4">
+                                <li class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                    <span>Advanced SEO analysis</span>
+                                </li>
+                                <li class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                    <span>Up to 15 websites</span>
+                                </li>
+                                <li class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                    <span>100 content analyses per month</span>
+                                </li>
+                                <li class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                    <span>Advanced keyword tracking</span>
+                                </li>
+                                <li class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                    <span>AI-powered recommendations</span>
+                                </li>
+                            </ul>
+
+                            <div class="text-center">
+                                <a href="#signup" class="btn btn-primary w-100">Get Started</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100">
+                        <div class="card-body p-4">
+                            <h5 class="text-center mb-4">Enterprise</h5>
+                            <div class="text-center mb-4">
+                                <span class="display-5 fw-bold">$199</span>
+                                <span class="text-secondary">/month</span>
+                            </div>
+
+                            <ul class="list-unstyled mb-4">
+                                <li class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                    <span>Premium SEO analysis</span>
+                                </li>
+                                <li class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                    <span>Unlimited websites</span>
+                                </li>
+                                <li class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                    <span>Unlimited content analyses</span>
+                                </li>
+                                <li class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                    <span>Competitor analysis</span>
+                                </li>
+                                <li class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-check-circle-fill text-primary me-2"></i>
+                                    <span>Priority support</span>
+                                </li>
+                            </ul>
+
+                            <div class="text-center">
+                                <a href="#signup" class="btn btn-outline-primary w-100">Contact Sales</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="signup" class="cta-section py-5 text-white">
+        <div class="container py-4 text-center">
+            <h2 class="fw-bold mb-4">Ready to Boost Your SEO Performance?</h2>
+            <p class="lead mb-4">Join thousands of websites that have improved their rankings with SEO Tools</p>
+            <form class="row g-3 justify-content-center">
+                <div class="col-md-4">
+                    <input type="text" class="form-control form-control-lg" placeholder="Your Name">
+                </div>
+                <div class="col-md-4">
+                    <input type="email" class="form-control form-control-lg" placeholder="Email Address">
+                </div>
+                <div class="col-md-auto">
+                    <button type="submit" class="btn btn-light btn-lg px-4">Start Free Trial</button>
+                </div>
+            </form>
+            <p class="mt-3 small">No credit card required. 14-day free trial.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-5 bg-black">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <a class="d-inline-flex align-items-center mb-3 text-decoration-none" href="#">
+                        <i class="bi bi-graph-up-arrow text-primary me-2"></i>
+                        <span class="fs-4 fw-bold text-white">SEO Tools</span>
+                    </a>
+                    <p class="text-secondary">Advanced SEO analysis and optimization tools to help your website rank higher in search results.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-secondary">
+                            <i class="bi bi-facebook fs-5"></i>
+                        </a>
+                        <a href="#" class="text-secondary">
+                            <i class="bi bi-twitter-x fs-5"></i>
+                        </a>
+                        <a href="#" class="text-secondary">
+                            <i class="bi bi-instagram fs-5"></i>
+                        </a>
+                        <a href="#" class="text-secondary">
+                            <i class="bi bi-linkedin fs-5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="row g-4">
+                        <div class="col-6 col-md-3">
+                            <h5 class="mb-3">Product</h5>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><a href="#features" class="text-secondary text-decoration-none">Features</a></li>
+                                <li class="mb-2"><a href="#pricing" class="text-secondary text-decoration-none">Pricing</a></li>
+                                <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Integrations</a></li>
+                                <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Updates</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="col-6 col-md-3">
+                            <h5 class="mb-3">Resources</h5>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Blog</a></li>
+                                <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Guides</a></li>
+                                <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Help Center</a></li>
+                                <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Webinars</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="col-6 col-md-3">
+                            <h5 class="mb-3">Company</h5>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">About</a></li>
+                                <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Careers</a></li>
+                                <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Contact</a></li>
+                                <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Partners</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="col-6 col-md-3">
+                            <h5 class="mb-3">Legal</h5>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Privacy</a></li>
+                                <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Terms</a></li>
+                                <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Security</a></li>
+                                <li class="mb-2"><a href="#" class="text-secondary text-decoration-none">Cookies</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-4 opacity-10">
+
+            <div class="text-center text-secondary">
+                <p class="mb-0">&copy; 2025 SEO Tools. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

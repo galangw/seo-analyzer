@@ -30,17 +30,21 @@ class ScoreCalculatorService
 
         // Check title length
         $titleLength = strlen($title);
-        $lengthScore = $this->calculateRangeScore(
-            $titleLength,
-            $subCriteria['title_length']['min'],
-            $subCriteria['title_length']['max']
-        );
+        $lengthScore = 0;
+        if ($titleLength >= 75 && $titleLength <= 95) {
+            $lengthScore = $this->ratingScale['good']; // 100%
+        } elseif (($titleLength >= 40 && $titleLength < 75) || ($titleLength > 95 && $titleLength <= 120)) {
+            $lengthScore = $this->ratingScale['improve']; // 50%
+        } else {
+            $lengthScore = $this->ratingScale['bad']; // 0%
+        }
+        
         $scores['title_length'] = [
             'score' => $lengthScore,
             'weight' => $subCriteria['title_length']['weight'],
             'value' => $lengthScore * $subCriteria['title_length']['weight'],
             'actual' => $titleLength,
-            'recommended' => $subCriteria['title_length']['min'] . '-' . $subCriteria['title_length']['max'],
+            'recommended' => '75-95 characters (40-120 acceptable)',
         ];
 
         $totalScore = array_sum(array_column($scores, 'value'));
@@ -67,17 +71,21 @@ class ScoreCalculatorService
 
         // Check meta description length
         $descLength = strlen($metaDescription);
-        $lengthScore = $this->calculateRangeScore(
-            $descLength,
-            $subCriteria['description_length']['min'],
-            $subCriteria['description_length']['max']
-        );
+        $lengthScore = 0;
+        if ($descLength >= 146 && $descLength <= 160) {
+            $lengthScore = $this->ratingScale['good']; // 100%
+        } elseif ($descLength >= 100 && $descLength < 146) {
+            $lengthScore = $this->ratingScale['improve']; // 50%
+        } else {
+            $lengthScore = $this->ratingScale['bad']; // 0%
+        }
+        
         $scores['description_length'] = [
             'score' => $lengthScore,
             'weight' => $subCriteria['description_length']['weight'],
             'value' => $lengthScore * $subCriteria['description_length']['weight'],
             'actual' => $descLength,
-            'recommended' => $subCriteria['description_length']['min'] . '-' . $subCriteria['description_length']['max'],
+            'recommended' => '146-160 characters (100-160 acceptable)',
         ];
 
         $totalScore = array_sum(array_column($scores, 'value'));
@@ -94,17 +102,21 @@ class ScoreCalculatorService
 
         // Word count check
         $wordCount = str_word_count(strip_tags($content));
-        $wordCountScore = $this->calculateProgressiveScore(
-            $wordCount,
-            $subCriteria['word_count']['min'],
-            $subCriteria['word_count']['good']
-        );
+        $wordCountScore = 0;
+        if ($wordCount >= 1200) {
+            $wordCountScore = $this->ratingScale['good']; // 100%
+        } elseif ($wordCount >= 700 && $wordCount < 1200) {
+            $wordCountScore = $this->ratingScale['improve']; // 50%
+        } else {
+            $wordCountScore = $this->ratingScale['bad']; // 0%
+        }
+        
         $scores['word_count'] = [
             'score' => $wordCountScore,
             'weight' => $subCriteria['word_count']['weight'],
             'value' => $wordCountScore * $subCriteria['word_count']['weight'],
             'actual' => $wordCount,
-            'recommended' => '>' . $subCriteria['word_count']['good'],
+            'recommended' => 'At least 1200 words (minimum 700)',
         ];
 
         // Keyword in first paragraph
@@ -140,34 +152,44 @@ class ScoreCalculatorService
             'value' => $keywordInAltScore * $subCriteria['keyword_in_img_alt']['weight'],
         ];
 
-        // Internal links check
+        // Internal links check - new formula based on percentage
         $internalLinkCount = $this->countInternalLinks($content);
-        $internalLinkScore = $this->calculateProgressiveScore(
-            $internalLinkCount,
-            $subCriteria['internal_links']['min'],
-            $subCriteria['internal_links']['good']
-        );
+        $internalLinkPercentage = $wordCount > 0 ? ($internalLinkCount / $wordCount) * 100 : 0;
+        
+        $internalLinkScore = 0;
+        if ($internalLinkPercentage >= 0.5 && $internalLinkPercentage <= 2.0) {
+            $internalLinkScore = $this->ratingScale['good']; // 100%
+        } elseif ($internalLinkPercentage > 0 && $internalLinkPercentage < 0.5) {
+            $internalLinkScore = $this->ratingScale['improve']; // 50%
+        } else {
+            $internalLinkScore = $this->ratingScale['bad']; // 0%
+        }
+        
         $scores['internal_links'] = [
             'score' => $internalLinkScore,
             'weight' => $subCriteria['internal_links']['weight'],
             'value' => $internalLinkScore * $subCriteria['internal_links']['weight'],
-            'actual' => $internalLinkCount,
-            'recommended' => '>=' . $subCriteria['internal_links']['min'],
+            'actual' => $internalLinkCount . ' links (' . number_format($internalLinkPercentage, 2) . '%)',
+            'recommended' => '0.5% to 2.0% of content',
         ];
 
         // Keyword density check
         $keywordDensity = $this->calculateKeywordDensity($content, $keyword);
-        $keywordDensityScore = $this->calculateRangeScore(
-            $keywordDensity,
-            $subCriteria['keyword_density']['min'],
-            $subCriteria['keyword_density']['max']
-        );
+        $keywordDensityScore = 0;
+        if ($keywordDensity >= 1.0 && $keywordDensity <= 2.0) {
+            $keywordDensityScore = $this->ratingScale['good']; // 100%
+        } elseif (($keywordDensity > 0 && $keywordDensity < 1.0) || ($keywordDensity > 2.0 && $keywordDensity <= 4.0)) {
+            $keywordDensityScore = $this->ratingScale['improve']; // 50%
+        } else {
+            $keywordDensityScore = $this->ratingScale['bad']; // 0%
+        }
+        
         $scores['keyword_density'] = [
             'score' => $keywordDensityScore,
             'weight' => $subCriteria['keyword_density']['weight'],
             'value' => $keywordDensityScore * $subCriteria['keyword_density']['weight'],
             'actual' => number_format($keywordDensity, 2) . '%',
-            'recommended' => $subCriteria['keyword_density']['min'] . '-' . $subCriteria['keyword_density']['max'] . '%',
+            'recommended' => '1.0% to 2.0% (0.5% to 4.0% acceptable)',
         ];
 
         $totalScore = array_sum(array_column($scores, 'value'));
