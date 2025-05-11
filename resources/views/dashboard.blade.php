@@ -28,16 +28,9 @@
                             <div class="col-md-6">
                                 <div class="p-4 rounded text-center border">
                                     <i class="bi bi-graph-up display-4 text-primary mb-3"></i>
-                                    @php
-                                        $scoreClass = 
-                                            $averageScore >= 80 
-                                                ? 'success' 
-                                                : ($averageScore >= 50 
-                                                    ? 'warning' 
-                                                    : 'danger');
-                                    @endphp
-                                    <h3 class="fs-4 text-{{ $scoreClass }}">{{ $averageScore }}%</h3>
-                                    <p class="text-body-secondary">Average SEO Score</p>
+                            
+                                    <h3 class="fs-4 ">{{ $thismonthContent }}</h3>
+                                    <p class="text-body-secondary">This Month Contents</p>
                                 </div>
                             </div>
                             

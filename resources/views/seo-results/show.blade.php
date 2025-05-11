@@ -21,12 +21,12 @@
                             <a href="{{ route('contents.edit', $content->id) }}" class="btn btn-primary">
                                 <i class="bi bi-pencil me-1"></i> Edit Content
                             </a>
-                            <form action="{{ route('seo-results.reanalyze', $content->id) }}" method="POST" class="d-inline">
+                            <!-- <form action="{{ route('seo-results.reanalyze', $content->id) }}" method="POST" class="d-inline">
                                 @csrf
                                 <button type="submit" class="btn btn-outline-secondary">
                                     <i class="bi bi-arrow-repeat me-1"></i> Reanalyze
                                 </button>
-                            </form>
+                            </form> -->
                         </div>
                     </div>
                     <div class="card-body">
@@ -82,7 +82,7 @@
                                     <div class="card-body text-center">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <h6 class="fw-bold mb-0">Page Title</h6>
-                                            <span class="badge bg-primary">{{ $titleWeight }}%</span>
+                                            <span class="badge bg-primary text-dark">{{ $titleWeight }}%</span>
                                         </div>
                                     <div class="progress mb-3" style="height: 10px;">
                                         <div class="progress-bar bg-{{ $titleClass }}" role="progressbar"
@@ -103,7 +103,7 @@
                                     <div class="card-body text-center">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <h6 class="fw-bold mb-0">Meta Description</h6>
-                                            <span class="badge bg-primary">{{ $metaWeight }}%</span>
+                                            <span class="badge bg-primary text-dark">{{ $metaWeight }}%</span>
                                         </div>
                                     <div class="progress mb-3" style="height: 10px;">
                                         <div class="progress-bar bg-{{ $metaClass }}" role="progressbar"
@@ -124,7 +124,7 @@
                                     <div class="card-body text-center">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <h6 class="fw-bold mb-0">Content</h6>
-                                            <span class="badge bg-primary">{{ $contentWeight }}%</span>
+                                            <span class="badge bg-primary text-dark">{{ $contentWeight }}%</span>
                                         </div>
                                     <div class="progress mb-3" style="height: 10px;">
                                         <div class="progress-bar bg-{{ $contentClass }}" role="progressbar"
@@ -432,7 +432,7 @@
                                                         <tr>
                                                 <td>
                                                     <span class="badge bg-{{
-                                                        $recommendation['section'] == 'Page Title' ? 'primary' :
+                                                        $recommendation['section'] == 'Page Title' ? 'primary text-dark' :
                                                         ($recommendation['section'] == 'Meta Description' ? 'info' : 'secondary')
                                                     }}">
                                                         {{ $recommendation['section'] ?? 'Unknown' }}

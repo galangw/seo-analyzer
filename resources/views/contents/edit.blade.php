@@ -58,7 +58,9 @@
                                     <i class="fas fa-arrow-left me-1"></i> Back
                                 </a>
                                 <div>
-                                 
+                                    <button type="button" class="btn btn-primary me-2" id="preview-button">
+                                        <i class="fas fa-search me-1"></i> Preview Analysis
+                                    </button>
                                     <button type="button" class="btn btn-success" id="update-button">
                                         <i class="fas fa-save me-1"></i> Update & Reanalyze
                                     </button>
@@ -78,7 +80,7 @@
                         </div>
                         <div class="card-body text-center p-5">
                             <i class="fas fa-search fa-4x text-muted mb-3"></i>
-                            <p>Click "Preview Analysis" to see your SEO score or "Update & Reanalyze" to save changes.</p>
+                            <p>Click "Preview Analysis" to see your SEO score without saving or "Update & Reanalyze" to save changes and analyze.</p>
                         </div>
                     </div>
                 </div>
@@ -419,8 +421,6 @@
                 // Double-check if content is empty and show a more specific error
                 if (!contentInput.value || contentInput.value.trim() === '' || contentInput.value === '<p><br></p>') {
                     alert('Content cannot be empty. Please add some content before submitting.');
-                    this.innerHTML = '<i class="fas fa-save me-1"></i> Update & Reanalyze';
-                    this.disabled = false;
                     return;
                 }
 
@@ -439,16 +439,14 @@
                 formData.append('target_keyword', document.getElementById('target_keyword').value);
                 
                 // Ensure content from Quill is properly added
-                const finalContent = quill.root.innerHTML;
-                contentInput.value = finalContent; // Update hidden field
-                formData.append('content', finalContent);
+                formData.append('content', contentInput.value);
                 
                 // Add request ID to prevent duplicate submissions
                 const requestId = 'req_update_' + Date.now();
                 formData.append('request_id', requestId);
                 console.log('Update request ID:', requestId);
                 
-                // Indicate we want to reanalyze
+                // Explicitly set reanalyze flag to true
                 formData.append('reanalyze', 'true');
                 
                 // Make the PUT request
@@ -499,6 +497,71 @@
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 return false;
+            });
+
+            // Preview Analysis button functionality
+            document.getElementById('preview-button').addEventListener('click', function() {
+                // Check if form is valid
+                if (!validateForm()) {
+                    alert('Please fill in all required fields.');
+                    return;
+                }
+                
+                // Get content from Quill and set it to hidden input
+                const latestContent = quill.root.innerHTML;
+                contentInput.value = latestContent;
+                
+                // Show loading state
+                this.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Analyzing...';
+                this.disabled = true;
+
+                // Collect form data
+                const formData = new FormData();
+                formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+                formData.append('title', titleInput.value);
+                formData.append('meta_description', metaDescription.value);
+                formData.append('target_keyword', document.getElementById('target_keyword').value);
+                formData.append('content', contentInput.value);
+                
+                // Make the request to the analyze-content endpoint
+                fetch('{{ route('api.analyze-content') }}', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(errorData => {
+                            throw new Error(errorData.message || `Server returned ${response.status}`);
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Reset button
+                    this.innerHTML = '<i class="fas fa-search me-1"></i> Preview Analysis';
+                    this.disabled = false;
+                    
+                    if (data.success) {
+                        // Display the analysis results
+                        displayResults(data);
+                    } else {
+                        throw new Error(data.message || 'An error occurred.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    
+                    // Reset button
+                    this.innerHTML = '<i class="fas fa-search me-1"></i> Preview Analysis';
+                    this.disabled = false;
+                    
+                    // Show error message
+                    alert('Error analyzing content: ' + error.message);
+                });
             });
 
             // Display results function
@@ -556,7 +619,7 @@
                         
                         <div class="row g-3">
                             <div class="col-md-4">
-                                <div class="card border-0 bg-light h-100">
+                                <div class="card border-0 bg-body h-100">
                                     <div class="card-body text-center">
                                         <h6 class="fw-bold mb-2">Page Title</h6>
                                         <div class="progress mb-2" style="height: 10px;">
@@ -568,7 +631,7 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="card border-0 bg-light h-100">
+                                <div class="card border-0 bg-body h-100">
                                     <div class="card-body text-center">
                                         <h6 class="fw-bold mb-2">Meta Description</h6>
                                         <div class="progress mb-2" style="height: 10px;">
@@ -580,7 +643,7 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="card border-0 bg-light h-100">
+                                <div class="card border-0 bg-body h-100">
                                     <div class="card-body text-center">
                                         <h6 class="fw-bold mb-2">Content</h6>
                                         <div class="progress mb-2" style="height: 10px;">

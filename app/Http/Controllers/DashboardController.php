@@ -26,13 +26,13 @@ class DashboardController extends Controller
             ->get();
 
         // 0. Grafik konten yang diproduksi/dianalisis per hari (7 hari terakhir)
-        $startDate = Carbon::now()->subDays(6)->startOfDay();
+        $startDate = Carbon::now()->subDays(14)->startOfDay();
         $endDate = Carbon::now()->endOfDay();
         $dailyContentStats = $this->getDailyContentStats($user->id, $startDate, $endDate);
 
         // 1. Total konten per user
         $totalContent = $user->contents()->count();
-
+        $thismonthContent = $user->contents()->where('created_at', '>=', Carbon::now()->startOfMonth())->count();
         // 2. Rata-rata overall_score yang dimiliki user
         $averageScore = SeoResult::whereHas('content', function ($query) use ($user) {
             $query->where('user_id', $user->id);
@@ -47,7 +47,8 @@ class DashboardController extends Controller
             'dailyContentStats', 
             'totalContent', 
             'averageScore', 
-            'topKeywords'
+            'topKeywords',
+            'thismonthContent'
         ));
     }
 
