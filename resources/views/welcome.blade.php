@@ -314,7 +314,7 @@
                     @if (Route::has('login'))
                         @auth
                             <li class="nav-item">
-                                <a href="{{ url('/dashboard') }}" class="nav-link">Dashboard</a>
+                                <a href="{{ url('/dash') }}" class="nav-link">Dashboard</a>
                             </li>
                         @else
                             <li class="nav-item">
@@ -339,7 +339,7 @@
             <div>
                 @if (Route::has('login'))
                     @auth
-                        <a href="{{ url('/dashboard') }}" class="btn btn-primary">Go to Dashboard</a>
+                        <a href="{{ url('/dash') }}" class="btn btn-primary">Go to Dashboard</a>
                     @else
                         <a href="{{ route('login') }}" class="btn btn-primary">Get Started</a>
                         @if (Route::has('register'))

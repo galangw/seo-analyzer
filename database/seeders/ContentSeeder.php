@@ -15,15 +15,15 @@ class ContentSeeder extends Seeder
     public function run(): void
     {
         // Get a user or create one if none exists
-        $user = User::first() ?? User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => bcrypt('password'),
-        ]);
+        // $user = User::first() ?? User::factory()->create([
+        //     'name' => 'Test User',
+        //     'email' => 'test@example.com',
+        //     'password' => bcrypt('password'),
+        // ]);
 
         // Create 30 content entries spread across May 2-7, 2025
         $startDate = Carbon::createFromDate(2025, 5, 2);
-        $endDate = Carbon::createFromDate(2025, 5, 3);
+        $endDate = Carbon::createFromDate(2025, 5, 4);
 
         // Calculate how many days in the range
         $dayCount = $endDate->diffInDays($startDate) + 1; // +1 to include end date
@@ -48,7 +48,7 @@ class ContentSeeder extends Seeder
                 $timestamp = $currentDate->copy()->setTime($hour, $minute, $second);
                 
                 Content::factory()->create([
-                    'user_id' => $user->id,
+                 'user_id' =>'1',
                     'created_at' => $timestamp,
                     'updated_at' => $timestamp
                 ]);
@@ -73,7 +73,7 @@ class ContentSeeder extends Seeder
                 $timestamp = $endDate->copy()->setTime($hour, $minute, $second);
                 
                 Content::factory()->create([
-                    'user_id' => $user->id,
+                    'user_id' =>'1',
                     'created_at' => $timestamp,
                     'updated_at' => $timestamp
                 ]);

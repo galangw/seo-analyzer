@@ -7,6 +7,7 @@ use App\Http\Controllers\SeoResultController;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\LandingController;
 use App\Http\Middleware\EnsureWhatsAppIsVerified;
 
 /*
@@ -14,6 +15,14 @@ use App\Http\Middleware\EnsureWhatsAppIsVerified;
 | Web Routes
 |--------------------------------------------------------------------------
 */
+
+// Landing Page
+Route::get('/', [LandingController::class, 'index'])->name('landing');
+
+// Compatibility redirect for old /home route
+Route::get('/home', function() {
+    return redirect()->route('dashboard');
+});
 
 // Auth routes
 Auth::routes();
@@ -26,7 +35,7 @@ Route::post('/verify/resend', [VerificationController::class, 'resend'])->name('
 // Dashboard and protected routes (requires WhatsApp verification)
 Route::middleware([EnsureWhatsAppIsVerified::class])->group(function () {
     // Dashboard
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dash', [DashboardController::class, 'index'])->name('dashboard');
 
     // Content routes
     Route::resource('contents', ContentController::class);

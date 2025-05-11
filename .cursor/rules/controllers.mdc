@@ -1,0 +1,25 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Controllers
+
+The SEO Analyzer application uses these controllers to handle different aspects of the application:
+
+## Main Controllers
+
+- [DashboardController.php](mdc:seo-analyzer/app/Http/Controllers/DashboardController.php) - Handles the main dashboard view and statistics
+- [ContentController.php](mdc:seo-analyzer/app/Http/Controllers/ContentController.php) - Manages content creation, editing, and deletion
+- [SeoResultController.php](mdc:seo-analyzer/app/Http/Controllers/SeoResultController.php) - Manages SEO analysis results and reanalysis requests
+- [ProfileController.php](mdc:seo-analyzer/app/Http/Controllers/ProfileController.php) - Handles user profile management
+- [HomeController.php](mdc:seo-analyzer/app/Http/Controllers/HomeController.php) - Controls the landing page and home views
+
+## API Controllers
+
+- [ApiController.php](mdc:seo-analyzer/app/Http/Controllers/ApiController.php) - Base controller for API endpoints
+- API endpoints in [app/Http/Controllers/Api](mdc:seo-analyzer/app/Http/Controllers/Api) directory
+
+## Authentication Controllers
+
+Authentication controllers are in the [app/Http/Controllers/Auth](mdc:seo-analyzer/app/Http/Controllers/Auth) directory, handling login, registration, password resets, etc.

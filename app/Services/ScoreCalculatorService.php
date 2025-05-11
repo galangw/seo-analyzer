@@ -18,14 +18,36 @@ class ScoreCalculatorService
         $subCriteria = $this->criteria['page_title']['sub_criteria'];
         $scores = [];
 
-        // Check if keyword exists in title
-        $keywordExistsScore = stripos($title, $keyword) !== false
-            ? $this->ratingScale['good']
-            : $this->ratingScale['bad'];
+        // Split the comma-separated keywords
+        $keywords = array_map('trim', explode(',', $keyword));
+        $keywordCount = count($keywords);
+        
+        // Check keywords in title
+        $keywordsInTitle = 0;
+        foreach ($keywords as $kw) {
+            if (stripos($title, $kw) !== false) {
+                $keywordsInTitle++;
+            }
+        }
+        
+        // Calculate score based on percentage of keywords found
+        $keywordScore = 0;
+        $keywordPercentage = $keywordCount > 0 ? ($keywordsInTitle / $keywordCount) * 100 : 0;
+        
+        if ($keywordPercentage == 100) {
+            $keywordScore = $this->ratingScale['good']; // 100% - all keywords present
+        } elseif ($keywordPercentage >= 50) {
+            $keywordScore = $this->ratingScale['improve']; // 50% - at least half of keywords present
+        } else {
+            $keywordScore = $this->ratingScale['bad']; // 0% - less than half of keywords present
+        }
+        
         $scores['keyword_exists'] = [
-            'score' => $keywordExistsScore,
+            'score' => $keywordScore,
             'weight' => $subCriteria['keyword_exists']['weight'],
-            'value' => $keywordExistsScore * $subCriteria['keyword_exists']['weight'],
+            'value' => $keywordScore * $subCriteria['keyword_exists']['weight'],
+            'actual' => "{$keywordsInTitle}/{$keywordCount} keywords",
+            'recommended' => 'Include all target keywords in the title',
         ];
 
         // Check title length
@@ -59,14 +81,36 @@ class ScoreCalculatorService
         $subCriteria = $this->criteria['meta_description']['sub_criteria'];
         $scores = [];
 
-        // Check if keyword exists in meta description
-        $keywordExistsScore = stripos($metaDescription, $keyword) !== false
-            ? $this->ratingScale['good']
-            : $this->ratingScale['bad'];
+        // Split the comma-separated keywords
+        $keywords = array_map('trim', explode(',', $keyword));
+        $keywordCount = count($keywords);
+        
+        // Check keywords in meta description
+        $keywordsInMeta = 0;
+        foreach ($keywords as $kw) {
+            if (stripos($metaDescription, $kw) !== false) {
+                $keywordsInMeta++;
+            }
+        }
+        
+        // Calculate score based on percentage of keywords found
+        $keywordScore = 0;
+        $keywordPercentage = $keywordCount > 0 ? ($keywordsInMeta / $keywordCount) * 100 : 0;
+        
+        if ($keywordPercentage == 100) {
+            $keywordScore = $this->ratingScale['good']; // 100% - all keywords present
+        } elseif ($keywordPercentage >= 50) {
+            $keywordScore = $this->ratingScale['improve']; // 50% - at least half of keywords present
+        } else {
+            $keywordScore = $this->ratingScale['bad']; // 0% - less than half of keywords present
+        }
+        
         $scores['keyword_exists'] = [
-            'score' => $keywordExistsScore,
+            'score' => $keywordScore,
             'weight' => $subCriteria['keyword_exists']['weight'],
-            'value' => $keywordExistsScore * $subCriteria['keyword_exists']['weight'],
+            'value' => $keywordScore * $subCriteria['keyword_exists']['weight'],
+            'actual' => "{$keywordsInMeta}/{$keywordCount} keywords",
+            'recommended' => 'Include all target keywords in the meta description',
         ];
 
         // Check meta description length
@@ -100,6 +144,10 @@ class ScoreCalculatorService
         $subCriteria = $this->criteria['content']['sub_criteria'];
         $scores = [];
 
+        // Split the comma-separated keywords
+        $keywords = array_map('trim', explode(',', $keyword));
+        $keywordCount = count($keywords);
+
         // Word count check
         $wordCount = str_word_count(strip_tags($content));
         $wordCountScore = 0;
@@ -122,34 +170,90 @@ class ScoreCalculatorService
         // Keyword in first paragraph
         $paragraphs = $this->getParagraphs($content);
         $firstParagraph = $paragraphs[0] ?? '';
-        $keywordInFirstParagraphScore = stripos($firstParagraph, $keyword) !== false
-            ? $this->ratingScale['good']
-            : $this->ratingScale['bad'];
+        
+        $keywordsInFirstParagraph = 0;
+        foreach ($keywords as $kw) {
+            if (stripos($firstParagraph, $kw) !== false) {
+                $keywordsInFirstParagraph++;
+            }
+        }
+        
+        // Calculate score based on percentage of keywords found
+        $keywordInFirstParagraphScore = 0;
+        $keywordFirstParagraphPercentage = $keywordCount > 0 ? ($keywordsInFirstParagraph / $keywordCount) * 100 : 0;
+        
+        if ($keywordFirstParagraphPercentage == 100) {
+            $keywordInFirstParagraphScore = $this->ratingScale['good']; // 100% - all keywords present
+        } elseif ($keywordFirstParagraphPercentage >= 50) {
+            $keywordInFirstParagraphScore = $this->ratingScale['improve']; // 50% - at least half of keywords present
+        } else {
+            $keywordInFirstParagraphScore = $this->ratingScale['bad']; // 0% - less than half of keywords present
+        }
+        
         $scores['keyword_first_paragraph'] = [
             'score' => $keywordInFirstParagraphScore,
             'weight' => $subCriteria['keyword_first_paragraph']['weight'],
             'value' => $keywordInFirstParagraphScore * $subCriteria['keyword_first_paragraph']['weight'],
+            'actual' => "{$keywordsInFirstParagraph}/{$keywordCount} keywords",
+            'recommended' => 'Include all target keywords in the first paragraph',
         ];
 
         // Keyword in last paragraph
         $lastParagraph = end($paragraphs) ?: '';
-        $keywordInLastParagraphScore = stripos($lastParagraph, $keyword) !== false
-            ? $this->ratingScale['good']
-            : $this->ratingScale['bad'];
+        
+        $keywordsInLastParagraph = 0;
+        foreach ($keywords as $kw) {
+            if (stripos($lastParagraph, $kw) !== false) {
+                $keywordsInLastParagraph++;
+            }
+        }
+        
+        // Calculate score based on percentage of keywords found
+        $keywordInLastParagraphScore = 0;
+        $keywordLastParagraphPercentage = $keywordCount > 0 ? ($keywordsInLastParagraph / $keywordCount) * 100 : 0;
+        
+        if ($keywordLastParagraphPercentage == 100) {
+            $keywordInLastParagraphScore = $this->ratingScale['good']; // 100% - all keywords present
+        } elseif ($keywordLastParagraphPercentage >= 50) {
+            $keywordInLastParagraphScore = $this->ratingScale['improve']; // 50% - at least half of keywords present
+        } else {
+            $keywordInLastParagraphScore = $this->ratingScale['bad']; // 0% - less than half of keywords present
+        }
+        
         $scores['keyword_last_paragraph'] = [
             'score' => $keywordInLastParagraphScore,
             'weight' => $subCriteria['keyword_last_paragraph']['weight'],
             'value' => $keywordInLastParagraphScore * $subCriteria['keyword_last_paragraph']['weight'],
+            'actual' => "{$keywordsInLastParagraph}/{$keywordCount} keywords",
+            'recommended' => 'Include all target keywords in the last paragraph',
         ];
 
         // Keyword in image alt text
-        $keywordInAltScore = $this->checkKeywordInImageAlt($content, $keyword)
-            ? $this->ratingScale['good']
-            : $this->ratingScale['bad'];
+        $keywordsInAlt = 0;
+        foreach ($keywords as $kw) {
+            if ($this->checkKeywordInImageAlt($content, $kw)) {
+                $keywordsInAlt++;
+            }
+        }
+        
+        // Calculate score based on percentage of keywords found
+        $keywordInAltScore = 0;
+        $keywordInAltPercentage = $keywordCount > 0 ? ($keywordsInAlt / $keywordCount) * 100 : 0;
+        
+        if ($keywordInAltPercentage == 100) {
+            $keywordInAltScore = $this->ratingScale['good']; // 100% - all keywords present
+        } elseif ($keywordInAltPercentage >= 50) {
+            $keywordInAltScore = $this->ratingScale['improve']; // 50% - at least half of keywords present
+        } else {
+            $keywordInAltScore = $this->ratingScale['bad']; // 0% - less than half of keywords present
+        }
+        
         $scores['keyword_in_img_alt'] = [
             'score' => $keywordInAltScore,
             'weight' => $subCriteria['keyword_in_img_alt']['weight'],
             'value' => $keywordInAltScore * $subCriteria['keyword_in_img_alt']['weight'],
+            'actual' => "{$keywordsInAlt}/{$keywordCount} keywords",
+            'recommended' => 'Include all target keywords in image alt attributes',
         ];
 
         // Internal links check - new formula based on percentage
@@ -174,11 +278,28 @@ class ScoreCalculatorService
         ];
 
         // Keyword density check
-        $keywordDensity = $this->calculateKeywordDensity($content, $keyword);
+        $keywordDensities = [];
+        $plainText = strip_tags($content);
+        
+        foreach ($keywords as $kw) {
+            // Count keyword occurrences per 1200 words
+            $kwCount = preg_match_all('/\b' . preg_quote($kw, '/') . '\b/i', $plainText);
+            
+            // Calculate density per 1200 words
+            $scaledWordCount = $wordCount > 0 ? ($wordCount / 1200) : 1;
+            $scaledKeywordCount = $kwCount / $scaledWordCount;
+            $density = $wordCount > 0 ? ($scaledKeywordCount / 1200) * 100 : 0;
+            
+            $keywordDensities[] = $density;
+        }
+        
+        // Average density across all keywords
+        $avgKeywordDensity = !empty($keywordDensities) ? array_sum($keywordDensities) / count($keywordDensities) : 0;
+        
         $keywordDensityScore = 0;
-        if ($keywordDensity >= 1.0 && $keywordDensity <= 2.0) {
+        if ($avgKeywordDensity >= 1.0 && $avgKeywordDensity <= 2.0) {
             $keywordDensityScore = $this->ratingScale['good']; // 100%
-        } elseif (($keywordDensity > 0 && $keywordDensity < 1.0) || ($keywordDensity > 2.0 && $keywordDensity <= 4.0)) {
+        } elseif (($avgKeywordDensity > 0 && $avgKeywordDensity < 1.0) || ($avgKeywordDensity > 2.0 && $avgKeywordDensity <= 4.0)) {
             $keywordDensityScore = $this->ratingScale['improve']; // 50%
         } else {
             $keywordDensityScore = $this->ratingScale['bad']; // 0%
@@ -188,7 +309,7 @@ class ScoreCalculatorService
             'score' => $keywordDensityScore,
             'weight' => $subCriteria['keyword_density']['weight'],
             'value' => $keywordDensityScore * $subCriteria['keyword_density']['weight'],
-            'actual' => number_format($keywordDensity, 2) . '%',
+            'actual' => number_format($avgKeywordDensity, 2) . '%',
             'recommended' => '1.0% to 2.0% (0.5% to 4.0% acceptable)',
         ];
 
@@ -286,11 +407,20 @@ class ScoreCalculatorService
             return 0;
         }
 
-        // Count keyword occurrences
-        $keywordCount = preg_match_all('/\b' . preg_quote($keyword, '/') . '\b/i', $strippedContent);
-
-        // Calculate density percentage
-        return ($keywordCount / $wordCount) * 100;
+        // Split the comma-separated keywords
+        $keywords = array_map('trim', explode(',', $keyword));
+        $keywordDensities = [];
+        
+        foreach ($keywords as $kw) {
+            // Count keyword occurrences
+            $keywordCount = preg_match_all('/\b' . preg_quote($kw, '/') . '\b/i', $strippedContent);
+            
+            // Calculate density percentage
+            $keywordDensities[] = ($keywordCount / $wordCount) * 100;
+        }
+        
+        // Return average density across all keywords
+        return !empty($keywordDensities) ? array_sum($keywordDensities) / count($keywordDensities) : 0;
     }
 
     public function generateRecommendations($titleResult, $metaDescriptionResult, $contentResult)

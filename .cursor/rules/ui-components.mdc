@@ -1,0 +1,25 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# UI Components
+
+The application uses Bootstrap 5 with custom styling for its interface. Key UI components include:
+
+## Score Display
+- **Score Container**: Displays the numerical score with percentage
+- **Progress Bars**: Gradient-colored bars showing score levels
+- **Score Classes**: Uses 'success', 'warning', and 'danger' classes to indicate quality
+
+## Content Editor
+- **Quill Editor**: Rich text editor for content management
+- **Character Counters**: Real-time character counters for title and meta description
+
+## Feedback Components
+- **List Groups**: Used to display SEO feedback items
+- **Icon System**: Uses Bootstrap Icons (bi-*) to visually indicate feedback quality
+
+## AI Integration
+- AI suggestion buttons for generating titles and meta descriptions
+- Loading indicators during API calls

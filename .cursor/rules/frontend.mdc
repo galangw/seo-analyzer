@@ -1,0 +1,27 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Frontend
+
+The SEO Analyzer application uses Laravel Blade templates with modern JavaScript and CSS.
+
+## Structure
+
+- [resources/views](mdc:seo-analyzer/resources/views) - Contains Blade templates
+- [resources/js](mdc:seo-analyzer/resources/js) - JavaScript code
+- [resources/css](mdc:seo-analyzer/resources/css) - CSS styles
+- [public](mdc:seo-analyzer/public) - Public assets
+
+## Build System
+
+The project uses Vite for asset compilation:
+- [vite.config.js](mdc:seo-analyzer/vite.config.js) - Vite configuration
+
+## Key Views
+
+- Dashboard: [resources/views/dashboard.blade.php](mdc:seo-analyzer/resources/views/dashboard.blade.php)
+- Content Editor: [resources/views/content](mdc:seo-analyzer/resources/views/content)
+- SEO Results: [resources/views/seo-results](mdc:seo-analyzer/resources/views/seo-results)
+- Layouts: [resources/views/layouts](mdc:seo-analyzer/resources/views/layouts)

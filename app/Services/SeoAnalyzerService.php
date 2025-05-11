@@ -85,7 +85,7 @@ class SeoAnalyzerService
         $overallScore = ($titleAnalysis['score'] * 0.20) + ($metaAnalysis['score'] * 0.05) + ($contentAnalysis['score'] * 0.75);
 
         // Generate recommendations
-        $recommendations = $this->generateRecommendations($titleAnalysis, $metaAnalysis, $contentAnalysis, $title, $metaDescription, $content);
+        $recommendations = $this->generateRecommendations($titleAnalysis, $metaAnalysis, $contentAnalysis, $title, $metaDescription, $content, $targetKeyword);
 
         return [
             'page_title' => $titleAnalysis,
@@ -103,16 +103,39 @@ class SeoAnalyzerService
     {
         $score = 0;
         $details = [];
-
-        // Check keyword in title
-        $keywordInTitle = Str::contains(strtolower($title), strtolower($targetKeyword));
-        $keywordScore = $keywordInTitle ? 1.0 : 0.0;
+        
+        // Split the comma-separated keywords
+        $keywords = array_map('trim', explode(',', $targetKeyword));
+        $keywordCount = count($keywords);
+        
+        // Check keywords in title
+        $keywordsInTitle = 0;
+        foreach ($keywords as $keyword) {
+            if (Str::contains(strtolower($title), strtolower($keyword))) {
+                $keywordsInTitle++;
+            }
+        }
+        
+        // Calculate keyword score based on percentage of keywords found
+        $keywordScore = 0;
+        $keywordPercentage = $keywordCount > 0 ? ($keywordsInTitle / $keywordCount) * 100 : 0;
+        
+        if ($keywordPercentage == 100) {
+            $keywordScore = 1.0; // 100% - all keywords present
+        } elseif ($keywordPercentage >= 50) {
+            $keywordScore = 0.5; // 50% - at least half of keywords present
+        } else {
+            $keywordScore = 0.0; // 0% - less than half of keywords present
+        }
+        
         $details['keyword_in_title'] = [
             'score' => $keywordScore,
             'weight' => 0.7,
-            'description' => $keywordInTitle
-                ? 'Great! Your title contains the target keyword.'
-                : 'Consider adding your target keyword to the title.',
+            'description' => $keywordsInTitle > 0
+                ? "Found {$keywordsInTitle} of {$keywordCount} keywords in title."
+                : 'No target keywords found in the title.',
+            'actual' => "{$keywordsInTitle}/{$keywordCount} keywords",
+            'recommended' => 'Include all target keywords in the title',
         ];
 
         // Check title length
@@ -150,16 +173,39 @@ class SeoAnalyzerService
     {
         $score = 0;
         $details = [];
+        
+        // Split the comma-separated keywords
+        $keywords = array_map('trim', explode(',', $targetKeyword));
+        $keywordCount = count($keywords);
+        
+        // Check keywords in meta description
+        $keywordsInMeta = 0;
+        foreach ($keywords as $keyword) {
+            if (Str::contains(strtolower($metaDescription), strtolower($keyword))) {
+                $keywordsInMeta++;
+            }
+        }
+        
+        // Calculate keyword score based on percentage of keywords found
+        $keywordScore = 0;
+        $keywordPercentage = $keywordCount > 0 ? ($keywordsInMeta / $keywordCount) * 100 : 0;
+        
+        if ($keywordPercentage == 100) {
+            $keywordScore = 1.0; // 100% - all keywords present
+        } elseif ($keywordPercentage >= 50) {
+            $keywordScore = 0.5; // 50% - at least half of keywords present
+        } else {
+            $keywordScore = 0.0; // 0% - less than half of keywords present
+        }
 
-        // Check keyword in meta description
-        $keywordInMeta = Str::contains(strtolower($metaDescription), strtolower($targetKeyword));
-        $keywordScore = $keywordInMeta ? 1.0 : 0.0;
         $details['keyword_in_meta'] = [
             'score' => $keywordScore,
             'weight' => 0.5,
-            'description' => $keywordInMeta
-                ? 'Good! Meta description includes target keyword.'
-                : 'Add your target keyword to the meta description.',
+            'description' => $keywordsInMeta > 0
+                ? "Found {$keywordsInMeta} of {$keywordCount} keywords in meta description."
+                : 'No target keywords found in the meta description.',
+            'actual' => "{$keywordsInMeta}/{$keywordCount} keywords",
+            'recommended' => 'Include all target keywords in the meta description',
         ];
 
         // Check meta description length
@@ -198,6 +244,10 @@ class SeoAnalyzerService
         $score = 0;
         $details = [];
 
+        // Split the comma-separated keywords
+        $keywords = array_map('trim', explode(',', $targetKeyword));
+        $keywordCount = count($keywords);
+
         // Clean HTML tags for text analysis
         $plainText = strip_tags($content);
 
@@ -223,61 +273,99 @@ class SeoAnalyzerService
             'recommended' => 'At least 1200 words (minimum 700)',
         ];
 
-        // Check keyword in first paragraph
+        // Check keywords in first paragraph
         $paragraphs = $this->getParagraphs($content);
         $firstParagraph = $paragraphs[0] ?? '';
-        $keywordInFirstParagraphScore = stripos($firstParagraph, $targetKeyword) !== false ? 1.0 : 0.0;
+        
+        $keywordsInFirstParagraph = 0;
+        foreach ($keywords as $keyword) {
+            if (stripos($firstParagraph, $keyword) !== false) {
+                $keywordsInFirstParagraph++;
+            }
+        }
+        
+        // Calculate keyword in first paragraph score
+        $keywordFirstParagraphScore = 0;
+        $keywordFirstParagraphPercentage = $keywordCount > 0 ? ($keywordsInFirstParagraph / $keywordCount) * 100 : 0;
+        
+        if ($keywordFirstParagraphPercentage == 100) {
+            $keywordFirstParagraphScore = 1.0; // 100% - all keywords present
+        } elseif ($keywordFirstParagraphPercentage >= 50) {
+            $keywordFirstParagraphScore = 0.5; // 50% - at least half of keywords present
+        } else {
+            $keywordFirstParagraphScore = 0.0; // 0% - less than half of keywords present
+        }
 
         $details['keyword_first_paragraph'] = [
-            'score' => $keywordInFirstParagraphScore,
+            'score' => $keywordFirstParagraphScore,
             'weight' => 0.1,
-            'description' => $keywordInFirstParagraphScore === 1.0
-                ? "Great! Your first paragraph contains the target keyword."
-                : "Add your target keyword to the first paragraph to improve SEO.",
+            'description' => $keywordsInFirstParagraph > 0
+                ? "Found {$keywordsInFirstParagraph} of {$keywordCount} keywords in first paragraph."
+                : "No target keywords found in the first paragraph.",
+            'actual' => "{$keywordsInFirstParagraph}/{$keywordCount} keywords",
+            'recommended' => 'Include all target keywords in the first paragraph',
         ];
 
-        // Check keyword in last paragraph
+        // Check keywords in last paragraph
         $lastParagraph = end($paragraphs) ?: '';
-        $keywordInLastParagraphScore = stripos($lastParagraph, $targetKeyword) !== false ? 1.0 : 0.0;
+        
+        $keywordsInLastParagraph = 0;
+        foreach ($keywords as $keyword) {
+            if (stripos($lastParagraph, $keyword) !== false) {
+                $keywordsInLastParagraph++;
+            }
+        }
+        
+        // Calculate keyword in last paragraph score
+        $keywordLastParagraphScore = 0;
+        $keywordLastParagraphPercentage = $keywordCount > 0 ? ($keywordsInLastParagraph / $keywordCount) * 100 : 0;
+        
+        if ($keywordLastParagraphPercentage == 100) {
+            $keywordLastParagraphScore = 1.0; // 100% - all keywords present
+        } elseif ($keywordLastParagraphPercentage >= 50) {
+            $keywordLastParagraphScore = 0.5; // 50% - at least half of keywords present
+        } else {
+            $keywordLastParagraphScore = 0.0; // 0% - less than half of keywords present
+        }
 
         $details['keyword_last_paragraph'] = [
-            'score' => $keywordInLastParagraphScore,
+            'score' => $keywordLastParagraphScore,
             'weight' => 0.1,
-            'description' => $keywordInLastParagraphScore === 1.0
-                ? "Good! Your last paragraph contains the target keyword."
-                : "Consider adding your target keyword to the last paragraph to improve SEO.",
+            'description' => $keywordsInLastParagraph > 0
+                ? "Found {$keywordsInLastParagraph} of {$keywordCount} keywords in last paragraph."
+                : "No target keywords found in the last paragraph.",
+            'actual' => "{$keywordsInLastParagraph}/{$keywordCount} keywords",
+            'recommended' => 'Include all target keywords in the last paragraph',
         ];
 
-        // Check keyword in image alt text
-        $keywordInAltScore = $this->checkKeywordInImageAlt($content, $targetKeyword) ? 1.0 : 0.0;
+        // Check keywords in image alt text
+        $keywordsInAlt = 0;
+        foreach ($keywords as $keyword) {
+            if ($this->checkKeywordInImageAlt($content, $keyword)) {
+                $keywordsInAlt++;
+            }
+        }
+        
+        // Calculate keyword in alt text score
+        $keywordInAltScore = 0;
+        $keywordInAltPercentage = $keywordCount > 0 ? ($keywordsInAlt / $keywordCount) * 100 : 0;
+        
+        if ($keywordInAltPercentage == 100) {
+            $keywordInAltScore = 1.0; // 100% - all keywords present
+        } elseif ($keywordInAltPercentage >= 50) {
+            $keywordInAltScore = 0.5; // 50% - at least half of keywords present
+        } else {
+            $keywordInAltScore = 0.0; // 0% - less than half of keywords present
+        }
 
         $details['keyword_in_img_alt'] = [
             'score' => $keywordInAltScore,
             'weight' => 0.1,
-            'description' => $keywordInAltScore === 1.0
-                ? "Well done! Your images include alt text with the target keyword."
-                : "Add your target keyword to at least one image alt text.",
-        ];
-
-        // Calculate keyword density
-        $keywordCount = substr_count(strtolower($plainText), strtolower($targetKeyword));
-        $keywordDensity = $wordCount > 0 ? ($keywordCount / $wordCount) * 100 : 0;
-
-        $keywordDensityScore = 0;
-        if ($keywordDensity >= 1.0 && $keywordDensity <= 2.0) {
-            $keywordDensityScore = 1.0;
-        } elseif (($keywordDensity > 0 && $keywordDensity < 1.0) || ($keywordDensity > 2.0 && $keywordDensity <= 4.0)) {
-            $keywordDensityScore = 0.5;
-        }
-
-        $details['keyword_density'] = [
-            'score' => $keywordDensityScore,
-            'weight' => 0.3,
-            'description' => $keywordDensity >= 1.0 && $keywordDensity <= 2.0
-                ? "Good keyword density of " . number_format($keywordDensity, 2) . "%."
-                : "Current keyword density: " . number_format($keywordDensity, 2) . "%. Aim for 1.0% to 2.0%.",
-            'actual' => number_format($keywordDensity, 2) . '%',
-            'recommended' => '1.0% to 2.0% (0.5% to 4.0% acceptable)',
+            'description' => $keywordsInAlt > 0
+                ? "Found {$keywordsInAlt} of {$keywordCount} keywords in image alt attributes."
+                : "No target keywords found in image alt attributes.",
+            'actual' => "{$keywordsInAlt}/{$keywordCount} keywords",
+            'recommended' => 'Include all target keywords in image alt attributes',
         ];
 
         // Internal links check
@@ -301,10 +389,41 @@ class SeoAnalyzerService
             'recommended' => '0.5% to 2.0% of content',
         ];
 
+        // Calculate keyword density for each keyword and average them
+        $keywordDensities = [];
+        foreach ($keywords as $keyword) {
+            $keywordCount = substr_count(strtolower($plainText), strtolower($keyword));
+            // Calculate per 1200 words as specified in requirements
+            $scaledWordCount = $wordCount > 0 ? ($wordCount / 1200) : 1;
+            $scaledKeywordCount = $keywordCount / $scaledWordCount;
+            $density = $wordCount > 0 ? ($scaledKeywordCount / 1200) * 100 : 0;
+            $keywordDensities[] = $density;
+        }
+        
+        // Average density across all keywords
+        $avgKeywordDensity = count($keywordDensities) > 0 ? array_sum($keywordDensities) / count($keywordDensities) : 0;
+        
+        $keywordDensityScore = 0;
+        if ($avgKeywordDensity >= 1.0 && $avgKeywordDensity <= 2.0) {
+            $keywordDensityScore = 1.0;
+        } elseif (($avgKeywordDensity > 0 && $avgKeywordDensity < 1.0) || ($avgKeywordDensity > 2.0 && $avgKeywordDensity <= 4.0)) {
+            $keywordDensityScore = 0.5;
+        }
+
+        $details['keyword_density'] = [
+            'score' => $keywordDensityScore,
+            'weight' => 0.3,
+            'description' => $avgKeywordDensity >= 1.0 && $avgKeywordDensity <= 2.0
+                ? "Good average keyword density of " . number_format($avgKeywordDensity, 2) . "%."
+                : "Current average keyword density: " . number_format($avgKeywordDensity, 2) . "%. Aim for 1.0% to 2.0%.",
+            'actual' => number_format($avgKeywordDensity, 2) . '%',
+            'recommended' => '1.0% to 2.0% (0.5% to 4.0% acceptable)',
+        ];
+
         // Calculate content component score - uses the weights defined in config
         $score = ($wordCountScore * 0.3) +
-                ($keywordInFirstParagraphScore * 0.1) +
-                ($keywordInLastParagraphScore * 0.1) +
+                ($keywordFirstParagraphScore * 0.1) +
+                ($keywordLastParagraphScore * 0.1) +
                 ($keywordInAltScore * 0.1) +
                 ($internalLinkScore * 0.1) +
                 ($keywordDensityScore * 0.3);
@@ -378,18 +497,20 @@ class SeoAnalyzerService
     /**
      * Generate recommendations based on analysis
      */
-    private function generateRecommendations($titleAnalysis, $metaAnalysis, $contentAnalysis, $title, $metaDescription, $content)
+    private function generateRecommendations($titleAnalysis, $metaAnalysis, $contentAnalysis, $title, $metaDescription, $content, $targetKeyword)
     {
         $recommendations = [];
+        $keywords = array_map('trim', explode(',', $targetKeyword));
+        $keywordCount = count($keywords);
 
         // Title recommendations
         if ($titleAnalysis['details']['keyword_in_title']['score'] < 1) {
             $recommendations[] = [
                 'section' => 'Page Title',
                 'criteria' => 'Keyword Usage',
-                'description' => 'Include your target keyword in the page title.',
-                'actual' => "Current title: '$title'",
-                'recommended' => "Consider adding your target keyword to the title.",
+                'description' => 'Include all target keywords in the page title.',
+                'actual' => $titleAnalysis['details']['keyword_in_title']['actual'],
+                'recommended' => "Consider adding all your target keywords to the title.",
             ];
         }
 
@@ -409,9 +530,9 @@ class SeoAnalyzerService
             $recommendations[] = [
                 'section' => 'Meta Description',
                 'criteria' => 'Keyword Usage',
-                'description' => 'Include your target keyword in the meta description.',
-                'actual' => "Current meta description doesn't contain the target keyword.",
-                'recommended' => "Add your target keyword to increase relevance.",
+                'description' => 'Include all your target keywords in the meta description.',
+                'actual' => $metaAnalysis['details']['keyword_in_meta']['actual'],
+                'recommended' => "Add all your target keywords to increase relevance.",
             ];
         }
 
@@ -456,9 +577,9 @@ class SeoAnalyzerService
             $recommendations[] = [
                 'section' => 'Content',
                 'criteria' => 'First Paragraph',
-                'description' => 'Include target keyword in the first paragraph.',
-                'actual' => "Keyword not found in first paragraph.",
-                'recommended' => "Add your target keyword naturally to the first paragraph.",
+                'description' => 'Include all target keywords in the first paragraph.',
+                'actual' => $contentAnalysis['details']['keyword_first_paragraph']['actual'],
+                'recommended' => "Add all your target keywords naturally to the first paragraph.",
             ];
         }
 
@@ -466,9 +587,9 @@ class SeoAnalyzerService
             $recommendations[] = [
                 'section' => 'Content',
                 'criteria' => 'Last Paragraph',
-                'description' => 'Include target keyword in the last paragraph.',
-                'actual' => "Keyword not found in last paragraph.",
-                'recommended' => "Add your target keyword naturally to the last paragraph.",
+                'description' => 'Include all target keywords in the last paragraph.',
+                'actual' => $contentAnalysis['details']['keyword_last_paragraph']['actual'],
+                'recommended' => "Add all your target keywords naturally to the last paragraph.",
             ];
         }
 
@@ -476,9 +597,9 @@ class SeoAnalyzerService
             $recommendations[] = [
                 'section' => 'Content',
                 'criteria' => 'Image Alt Text',
-                'description' => 'Include target keyword in at least one image alt attribute.',
-                'actual' => "No images with target keyword in alt attribute found.",
-                'recommended' => "Add target keyword to at least one relevant image alt text.",
+                'description' => 'Include all target keywords in at least one image alt attribute.',
+                'actual' => $contentAnalysis['details']['keyword_in_img_alt']['actual'],
+                'recommended' => "Add all target keywords to at least one relevant image alt text.",
             ];
         }
 

@@ -51,7 +51,7 @@
                         </h5>
                     </div>
                     <div class="card-body">
-                        <canvas id="contentActivityChart" height="100"></canvas>
+                        <canvas id="contentActivityChart" height="300"></canvas>
                     </div>
                 </div>
             </div>

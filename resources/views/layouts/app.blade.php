@@ -122,9 +122,9 @@
                 <!-- <a href="{{ route('seo-results.index') }}" class="nav-link {{ request()->routeIs('seo-results.index') ? 'active' : '' }}">
                     <i class="bi bi-clock-history"></i> History
                 </a> -->
-                <a href="#" class="nav-link">
+                <!-- <a href="#" class="nav-link">
                     <i class="bi bi-gear"></i> Settings
-                </a>
+                </a> -->
             </div>
             
             @if (Auth::check())

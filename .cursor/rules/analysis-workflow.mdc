@@ -1,0 +1,33 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Analysis Workflow
+
+The SEO analyzer application follows these workflows:
+
+## Content Editing
+1. The user edits content using the Quill rich text editor
+2. Character counters track title and meta description lengths
+3. Content validation occurs before any analysis
+
+## Analysis Methods
+1. **Preview Analysis**: Temporary analysis without saving (uses `api.analyze-content`)
+   - Form validation
+   - AJAX request to analysis endpoint
+   - Results displayed in the UI without saving
+
+2. **Update & Reanalyze**: Saves content and performs analysis
+   - Form validation
+   - Content saved via PUT request
+   - Redirects to results page after successful update
+
+## AI Assistance
+1. **AI Title Suggestion**: Generates title based on content and target keyword
+   - Requires content and target keyword
+   - Makes request to `api.suggest-title` endpoint
+
+2. **AI Meta Description Suggestion**: Generates meta description
+   - Requires content and target keyword
+   - Makes request to `api.suggest-meta-description` endpoint

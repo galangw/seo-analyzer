@@ -1,0 +1,23 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# SEO Analyzer Project Overview
+
+This Laravel project is an SEO analysis tool that helps users optimize their content for search engines. The application analyzes content, titles, and meta descriptions against SEO best practices and provides recommendations for improvement.
+
+## Key Files
+
+- Entry point: [artisan](mdc:seo-analyzer/artisan)
+- Main configuration: [.env.example](mdc:seo-analyzer/.env.example)
+- Composer dependencies: [composer.json](mdc:seo-analyzer/composer.json)
+
+## Core Components
+
+- Controllers: [app/Http/Controllers](mdc:seo-analyzer/app/Http/Controllers)
+- Models: [app/Models](mdc:seo-analyzer/app/Models)
+- Services: [app/Services](mdc:seo-analyzer/app/Services)
+
+The application follows Laravel's MVC architecture with additional service layers for business logic.
+

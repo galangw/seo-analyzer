@@ -80,6 +80,104 @@
         .progress-circle-value span {
             font-size: 16px;
         }
+
+        /* Score display styles */
+        .score-container {
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        
+        .score-value-display {
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        .score-number {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1;
+            transition: all 0.5s ease;
+        }
+        
+        .score-danger {
+            background: linear-gradient(90deg, #dc3545, #f86032);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .score-warning {
+            background: linear-gradient(90deg, #ffc107, #fd7e14);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .score-success {
+            background: linear-gradient(90deg, #20c997, #28a745);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .score-number.active {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.8; }
+            50% { opacity: 1; }
+            100% { opacity: 0.8; }
+        }
+        
+        .score-percent {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #6c757d;
+            margin-left: 5px;
+        }
+        
+        .score-progress {
+            height: 12px;
+            border-radius: 10px;
+            background-color: #e9ecef;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .score-progress .progress-bar {
+            border-radius: 10px;
+            position: relative;
+            transition: width 1s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .score-progress .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.1) 100%);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .bg-success {
+            background: linear-gradient(90deg, #28a745, #20c997) !important;
+        }
+        
+        .bg-warning {
+            background: linear-gradient(90deg, #ffc107, #fd7e14) !important;
+        }
+        
+        .bg-danger {
+            background: linear-gradient(90deg, #dc3545, #f86032) !important;
+        }
 </style>
 @endsection
 
@@ -742,24 +840,25 @@
                     </div>
                     <div class="card-body">
                         <div class="text-center mb-4">
-                            <div class="progress-circle progress-${scoreClass}" data-value="${Math.round(overallScore)}">
-                                <span class="progress-circle-left">
-                                    <span class="progress-circle-bar"></span>
-                                </span>
-                                <span class="progress-circle-right">
-                                    <span class="progress-circle-bar"></span>
-                                </span>
-                                <div class="progress-circle-value">
-                                    <div>
-                                        ${Math.round(overallScore)}<span>%</span>
+                            <div class="score-container">
+                                <div class="score-value-display">
+                                    <span class="score-number score-${scoreClass}">${Math.round(overallScore)}</span>
+                                    <span class="score-percent">%</span>
+                                </div>
+                                <div class="progress score-progress">
+                                    <div class="progress-bar bg-${scoreClass}" role="progressbar" 
+                                         style="width: ${Math.round(overallScore)}%" 
+                                         aria-valuenow="${Math.round(overallScore)}" 
+                                         aria-valuemin="0" 
+                                         aria-valuemax="100">
                                     </div>
                                 </div>
+                                <p class="mt-2 fw-bold">
+                                    <span class="badge bg-${scoreClass}">
+                                        ${overallScore >= 80 ? 'Excellent' : (overallScore >= 50 ? 'Fair' : 'Poor')}
+                                    </span>
+                                </p>
                             </div>
-                            <p class="mt-3 fw-bold">
-                                <span class="badge bg-${scoreClass}">
-                                    ${overallScore >= 80 ? 'Excellent' : (overallScore >= 50 ? 'Fair' : 'Poor')}
-                                </span>
-                            </p>
                         </div>
 
                         <div class="row g-3">
@@ -768,7 +867,6 @@
                                     <div class="card-body text-center">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <h6 class="fw-bold mb-0">Page Title</h6>
-                                            <span class="badge text-bg-secondary">20%</span>
                                         </div>
                                         <div class="progress mb-2" style="height: 10px;">
                                             <div class="progress-bar bg-${titleScoreClass}" role="progressbar" style="width: ${Math.round(titleScore)}%"
@@ -783,7 +881,6 @@
                                     <div class="card-body text-center">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <h6 class="fw-bold mb-0">Meta Description</h6>
-                                            <span class="badge text-bg-secondary">5%</span>
                                         </div>
                                         <div class="progress mb-2" style="height: 10px;">
                                             <div class="progress-bar bg-${metaScoreClass}" role="progressbar" style="width: ${Math.round(metaScore)}%"
@@ -798,7 +895,6 @@
                                     <div class="card-body text-center">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <h6 class="fw-bold mb-0">Content</h6>
-                                            <span class="badge text-bg-secondary">75%</span>
                                         </div>
                                         <div class="progress mb-2" style="height: 10px;">
                                             <div class="progress-bar bg-${contentScoreClass}" role="progressbar" style="width: ${Math.round(contentScore)}%"
@@ -1057,32 +1153,25 @@
 
                 document.getElementById('results').innerHTML = resultsHTML;
 
-                // Initialize progress circles with improved implementation
-                document.querySelectorAll('.progress-circle').forEach(function(el) {
-                    const value = parseInt(el.getAttribute('data-value'));
-
-                    // Get circle bars
-                    const leftBar = el.querySelector('.progress-circle-left .progress-circle-bar');
-                    const rightBar = el.querySelector('.progress-circle-right .progress-circle-bar');
-
-                    // Reset transform values first
-                    leftBar.style.transform = 'rotate(0deg)';
-                    rightBar.style.transform = 'rotate(0deg)';
-
-                    // Apply rotation based on percentage value
-                    setTimeout(() => {
-                        if (value <= 50) {
-                            // Only right side rotates for values <= 50%
-                            rightBar.style.transform = 'rotate(' + (value * 3.6) + 'deg)';
-                        } else {
-                            // Right side rotates fully, left side fills remaining
-                            rightBar.style.transform = 'rotate(180deg)';
-                            setTimeout(() => {
-                                leftBar.style.transform = 'rotate(' + ((value - 50) * 3.6) + 'deg)';
-                            }, 100);
-                        }
-                    }, 50);
-                });
+                // Animate the progress bars
+                setTimeout(() => {
+                    const progressBars = document.querySelectorAll('.progress-bar');
+                    progressBars.forEach(bar => {
+                        // Start with width 0
+                        bar.style.width = '0%';
+                        // Force reflow
+                        void bar.offsetWidth;
+                        // Animate to actual value
+                        bar.style.width = bar.getAttribute('aria-valuenow') + '%';
+                    });
+                    
+                    // Add active class to score number for animation
+                    const scoreNumbers = document.querySelectorAll('.score-number');
+                    scoreNumbers.forEach(number => {
+                        // Add active class to trigger animation
+                        number.classList.add('active');
+                    });
+                }, 100);
 
                 // Add a clean event listener to the save button (without duplicates)
                 const saveButton = document.getElementById('save-button');

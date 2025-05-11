@@ -1,14 +1,113 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+    /* Score display styles */
+    .score-container {
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    
+    .score-value-display {
+        margin-bottom: 15px;
+        position: relative;
+    }
+    
+    .score-number {
+        font-size: 3.5rem;
+        font-weight: 700;
+        line-height: 1;
+        transition: all 0.5s ease;
+    }
+    
+    .score-danger {
+        background: linear-gradient(90deg, #dc3545, #f86032);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    .score-warning {
+        background: linear-gradient(90deg, #ffc107, #fd7e14);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    .score-success {
+        background: linear-gradient(90deg, #20c997, #28a745);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    .score-number.active {
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0% { opacity: 0.8; }
+        50% { opacity: 1; }
+        100% { opacity: 0.8; }
+    }
+    
+    .score-percent {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #6c757d;
+        margin-left: 5px;
+    }
+    
+    .score-progress {
+        height: 12px;
+        border-radius: 10px;
+        background-color: #e9ecef;
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        margin-bottom: 15px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .score-progress .progress-bar {
+        border-radius: 10px;
+        position: relative;
+        transition: width 1.5s cubic-bezier(0.09, 0.41, 0.41, 0.95);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .score-progress .progress-bar::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.1) 100%);
+        animation: shimmer 2s infinite;
+    }
+    
+    @keyframes shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+    }
+    
+    .bg-success {
+        background: linear-gradient(90deg, #28a745, #20c997) !important;
+    }
+    
+    .bg-warning {
+        background: linear-gradient(90deg, #ffc107, #fd7e14) !important;
+    }
+    
+    .bg-danger {
+        background: linear-gradient(90deg, #dc3545, #f86032) !important;
+    }
+</style>
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-8">
                 <!-- Input Form -->
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="mb-0">
-                            <i class="fas fa-edit me-2"></i>Edit Content
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-transparent">
+                        <h5 class="mb-0 d-flex align-items-center">
+                            <i class="bi bi-pencil-square me-2"></i>Edit Content
                         </h5>
                     </div>
                     <div class="card-body">
@@ -22,7 +121,7 @@
                                     <input type="text" class="form-control" id="title" name="title"
                                         value="{{ old('title', $content->title) }}" required>
                                     <button class="btn btn-outline-secondary" type="button" id="ai-title-suggestion">
-                                        <i class="fas fa-magic"></i> AI Suggestion
+                                        <i class="bi bi-magic"></i> AI Suggestion
                                     </button>
                                 </div>
                                 <div class="form-text">Optimal length: 30-60 characters</div>
@@ -34,7 +133,7 @@
                                 <div class="input-group">
                                     <textarea class="form-control" id="meta_description" name="meta_description" rows="3" required>{{ old('meta_description', $content->meta_description) }}</textarea>
                                     <button class="btn btn-outline-secondary" type="button" id="ai-meta-suggestion">
-                                        <i class="fas fa-magic"></i> AI Suggestion
+                                        <i class="bi bi-magic"></i> AI Suggestion
                                     </button>
                                 </div>
                                 <div class="form-text">Optimal length: 120-160 characters</div>
@@ -55,14 +154,14 @@
 
                             <div class="d-flex justify-content-between">
                                 <a href="{{ route('contents.index') }}" class="btn btn-secondary">
-                                    <i class="fas fa-arrow-left me-1"></i> Back
+                                    <i class="bi bi-arrow-left me-1"></i> Back
                                 </a>
                                 <div>
                                     <button type="button" class="btn btn-primary me-2" id="preview-button">
-                                        <i class="fas fa-search me-1"></i> Preview Analysis
+                                        <i class="bi bi-search me-1"></i> Preview Analysis
                                     </button>
                                     <button type="button" class="btn btn-success" id="update-button">
-                                        <i class="fas fa-save me-1"></i> Update & Reanalyze
+                                        <i class="bi bi-save me-1"></i> Update & Reanalyze
                                     </button>
                                 </div>
                             </div>
@@ -74,14 +173,24 @@
             <div class="col-md-4">
                 <!-- Results Section -->
                 <div id="results">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>SEO Score Preview</h5>
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-transparent">
+                            <h5 class="mb-0 d-flex align-items-center">
+                                <i class="bi bi-graph-up me-2"></i>SEO Score Preview
+                            </h5>
                         </div>
                         <div class="card-body text-center p-5">
-                            <i class="fas fa-search fa-4x text-muted mb-3"></i>
+                            <i class="bi bi-search display-1 text-body-secondary mb-3"></i>
                             <p>Click "Preview Analysis" to see your SEO score without saving or "Update & Reanalyze" to save changes and analyze.</p>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Error Alert Section -->
+                <div id="error-container" class="mt-3" style="display: none;">
+                    <div class="alert alert-danger d-flex align-items-center" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2 flex-shrink-0"></i>
+                        <div id="error-message">An error occurred.</div>
                     </div>
                 </div>
             </div>
@@ -97,6 +206,9 @@
                 console.error('Quill library not loaded. Check network connections or add a direct script include.');
                 return;
             }
+
+            // Register the HTML edit button module with Quill
+            Quill.register('modules/htmlEditButton', htmlEditButton);
 
             // Initialize Quill editor
             const quill = new Quill('#editor-container', {
@@ -146,8 +258,22 @@
                             'align': []
                         }],
                         ['clean'],
-                        ['link', 'image']
-                    ]
+                        ['link', 'image'],
+                        ['htmlEditButton']
+                    ],
+                    htmlEditButton: {
+                        debug: false,
+                        msg: "Edit kode HTML",
+                        okText: "Simpan",
+                        cancelText: "Batal",
+                        buttonHTML: "<i class='bi bi-code-slash'></i>",
+                        buttonTitle: "Edit HTML",
+                        syntax: false,
+                        prependSelector: 'div#editor-container',
+                        editorModules: {
+                            syntax: false
+                        }
+                    }
                 }
             });
 
@@ -169,7 +295,7 @@
                 const length = this.value.length;
                 titleCounter.textContent = length + ' characters';
 
-                if (length < 30 || length > 60) {
+                if (length < 40 || length > 120) {
                     titleCounter.classList.add('text-danger');
                     titleCounter.classList.remove('text-success');
                 } else {
@@ -200,17 +326,71 @@
             if (titleInput) titleInput.dispatchEvent(new Event('input'));
             if (metaDescription) metaDescription.dispatchEvent(new Event('input'));
 
-            // Form validation function
+            // Helper function to show errors
+            function showError(message) {
+                const errorContainer = document.getElementById('error-container');
+                const errorMessage = document.getElementById('error-message');
+                
+                errorMessage.innerHTML = message;
+                errorContainer.style.display = 'block';
+
+                // Scroll to error
+                errorContainer.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+
+            // Helper function to hide errors
+            function hideError() {
+                const errorContainer = document.getElementById('error-container');
+                errorContainer.style.display = 'none';
+            }
+
+            // Validation function
             function validateForm() {
-                if (!titleInput.value.trim()) return false;
-                if (!metaDescription.value.trim()) return false;
-                if (!document.getElementById('target_keyword').value.trim()) return false;
-                if (!contentInput.value.trim() || contentInput.value === '<p><br></p>') return false;
-                return true;
+                let isValid = true;
+                let errors = [];
+
+                // Validate title
+                if (!titleInput.value.trim()) {
+                    errors.push('Page title is required');
+                    isValid = false;
+                }
+
+                // Validate meta description
+                if (!metaDescription.value.trim()) {
+                    errors.push('Meta description is required');
+                    isValid = false;
+                }
+
+                // Validate target keyword
+                if (!document.getElementById('target_keyword').value.trim()) {
+                    errors.push('Target keyword is required');
+                    isValid = false;
+                }
+
+                // Validate content
+                const contentValue = quill.root.innerHTML;
+                if (!contentValue.trim() || contentValue === '<p><br></p>') {
+                    errors.push('Content is required');
+                    isValid = false;
+                }
+
+                // If validation failed, show error messages
+                if (!isValid) {
+                    showError(errors.join('<br>'));
+                } else {
+                    hideError();
+                }
+
+                return isValid;
             }
 
             // AI Title Suggestion functionality
             document.getElementById('ai-title-suggestion').addEventListener('click', function() {
+                // Hide any previous errors
+                hideError();
+
                 // Get content from Quill
                 const quillContent = quill.root.innerHTML;
                 contentInput.value = quillContent;
@@ -220,12 +400,12 @@
                 
                 // Validate required fields
                 if (!targetKeyword) {
-                    alert('Target keyword is required for AI title suggestion');
+                    showError('Target keyword is required for AI title suggestion');
                     return;
                 }
                 
                 if (!quillContent || quillContent === '<p><br></p>') {
-                    alert('Content is required for AI title suggestion');
+                    showError('Content is required for AI title suggestion');
                     return;
                 }
                 
@@ -308,6 +488,9 @@
 
             // AI Meta Description Suggestion functionality
             document.getElementById('ai-meta-suggestion').addEventListener('click', function() {
+                // Hide any previous errors
+                hideError();
+                
                 // Get content from Quill
                 const quillContent = quill.root.innerHTML;
                 contentInput.value = quillContent;
@@ -317,12 +500,12 @@
                 
                 // Validate required fields
                 if (!targetKeyword) {
-                    alert('Target keyword is required for AI meta description suggestion');
+                    showError('Target keyword is required for AI meta description suggestion');
                     return;
                 }
                 
                 if (!quillContent || quillContent === '<p><br></p>') {
-                    alert('Content is required for AI meta description suggestion');
+                    showError('Content is required for AI meta description suggestion');
                     return;
                 }
                 
@@ -369,7 +552,7 @@
                     } else {
                         let errorMessage = data.message || 'Failed to generate meta description suggestion';
                         console.error('AI Meta Description Suggestion Error:', data);
-                        alert(errorMessage);
+                        showError(errorMessage);
                     }
                 })
                 .catch(error => {
@@ -387,28 +570,30 @@
                                 validationErrors.push(msg);
                             });
                         }
-                        errorMsg = validationErrors.join('\n');
+                        errorMsg = validationErrors.join('<br>');
                     } else if (error.data && error.data.message) {
                         errorMsg = error.data.message;
                         
                         // Special handling for API key errors
                         if (error.data.error_code === 'API_KEY_MISSING' || error.data.error_code === 'API_ERROR') {
-                            errorMsg += '\n\nPlease contact the administrator to check the Gemini API configuration.';
+                            errorMsg += '<br><br>Please contact the administrator to check the Gemini API configuration.';
                         }
                     } else if (error.message) {
                         errorMsg += ': ' + error.message;
                     }
                     
-                    alert(errorMsg);
+                    showError(errorMsg);
                 });
             });
 
             // Update content
             updateButton.addEventListener('click', function() {
+                // Hide any previous errors
+                hideError();
+                
                 // Check if form is valid
                 if (!validateForm()) {
-                    alert('Please fill in all required fields.');
-                    return;
+                    return; // validateForm will display errors
                 }
                 
                 // Get content from Quill and set it to hidden input
@@ -420,7 +605,7 @@
 
                 // Double-check if content is empty and show a more specific error
                 if (!contentInput.value || contentInput.value.trim() === '' || contentInput.value === '<p><br></p>') {
-                    alert('Content cannot be empty. Please add some content before submitting.');
+                    showError('Content cannot be empty. Please add some content before submitting.');
                     return;
                 }
 
@@ -485,10 +670,10 @@
                     let errorMessage = error.message || 'An unknown error occurred';
                     
                     // Create a detailed error message for the alert
-                    alert('Error updating content: ' + errorMessage);
+                    showError('Error updating content: ' + errorMessage);
                     
                     // Reset button
-                    this.innerHTML = '<i class="fas fa-save me-1"></i> Update & Reanalyze';
+                    this.innerHTML = '<i class="bi bi-save me-1"></i> Update & Reanalyze';
                     this.disabled = false;
                 });
             });
@@ -501,10 +686,12 @@
 
             // Preview Analysis button functionality
             document.getElementById('preview-button').addEventListener('click', function() {
+                // Hide any previous errors
+                hideError();
+                
                 // Check if form is valid
                 if (!validateForm()) {
-                    alert('Please fill in all required fields.');
-                    return;
+                    return; // validateForm will display errors
                 }
                 
                 // Get content from Quill and set it to hidden input
@@ -542,7 +729,7 @@
                 })
                 .then(data => {
                     // Reset button
-                    this.innerHTML = '<i class="fas fa-search me-1"></i> Preview Analysis';
+                    this.innerHTML = '<i class="bi bi-search me-1"></i> Preview Analysis';
                     this.disabled = false;
                     
                     if (data.success) {
@@ -556,11 +743,11 @@
                     console.error('Error:', error);
                     
                     // Reset button
-                    this.innerHTML = '<i class="fas fa-search me-1"></i> Preview Analysis';
+                    this.innerHTML = '<i class="bi bi-search me-1"></i> Preview Analysis';
                     this.disabled = false;
                     
                     // Show error message
-                    alert('Error analyzing content: ' + error.message);
+                    showError('Error analyzing content: ' + error.message);
                 });
             });
 
@@ -593,28 +780,33 @@
                 const contentScoreClass = contentScore >= 80 ? 'success' : (contentScore >= 50 ? 'warning' : 'danger');
                 
                 let resultsHTML = `
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0"><i class="bi bi-graph-up me-2"></i>Overall SEO Score</h5>
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-body">
+                        <h5 class="mb-0 d-flex align-items-center">
+                            <i class="bi bi-graph-up me-2"></i>Overall SEO Score
+                        </h5>
                     </div>
                     <div class="card-body">
                         <div class="text-center mb-4">
-                            <div class="progress-circle progress-${scoreClass}" data-value="${Math.round(score)}">
-                                <span class="progress-circle-left">
-                                    <span class="progress-circle-bar"></span>
-                                </span>
-                                <span class="progress-circle-right">
-                                    <span class="progress-circle-bar"></span>
-                                </span>
-                                <div class="progress-circle-value">
-                                    <div>
-                                        ${Math.round(score)}<span>%</span>
+                            <div class="score-container">
+                                <div class="score-value-display">
+                                    <span class="score-number score-${scoreClass}">${Math.round(score)}</span>
+                                    <span class="score-percent">%</span>
+                                </div>
+                                <div class="progress score-progress">
+                                    <div class="progress-bar bg-${scoreClass}" role="progressbar" 
+                                         style="width: ${Math.round(score)}%" 
+                                         aria-valuenow="${Math.round(score)}" 
+                                         aria-valuemin="0" 
+                                         aria-valuemax="100">
                                     </div>
                                 </div>
+                                <p class="mt-2 fw-bold">
+                                    <span class="badge bg-${scoreClass}">
+                                        ${score >= 80 ? 'Excellent' : (score >= 50 ? 'Fair' : 'Poor')}
+                                    </span>
+                                </p>
                             </div>
-                            <p class="mt-3 text-${scoreClass} fw-bold">
-                                ${score >= 80 ? 'Excellent' : (score >= 50 ? 'Fair' : 'Poor')}
-                            </p>
                         </div>
                         
                         <div class="row g-3">
@@ -661,9 +853,11 @@
                 
                 // Title feedback
                 resultsHTML += `
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0"><i class="bi bi-type-h1 me-2"></i>Page Title Feedback</h5>
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-body">
+                        <h5 class="mb-0 d-flex align-items-center">
+                            <i class="bi bi-type-h1 me-2"></i>Page Title Feedback
+                        </h5>
                     </div>
                     <div class="card-body">
                         <ul class="list-group list-group-flush">
@@ -673,12 +867,22 @@
                 if (Array.isArray(data.title_feedback) && data.title_feedback.length > 0) {
                     data.title_feedback.forEach(item => {
                         if (item && typeof item === 'object' && 'score' in item && 'description' in item) {
-                            const iconClass = (item.score > 0.5) ? 'bi-check-circle text-success' : 'bi-exclamation-circle text-danger';
+                            const iconClass = item.score >= 0.8 ? 'bi-check-circle-fill text-success' :
+                                            (item.score >= 0.5 ? 'bi-exclamation-triangle-fill text-warning' : 'bi-x-circle-fill text-danger');
+                            
+                            const criteriaName = item.criteria ? item.criteria.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : '';
+                            
                             resultsHTML += `
                             <li class="list-group-item bg-transparent px-0">
-                                <div class="d-flex align-items-center">
-                                    <i class="bi ${iconClass} fs-4 me-2"></i>
-                                    <span>${item.description}</span>
+                                <div class="d-flex">
+                                    <div class="flex-shrink-0">
+                                        <i class="bi ${iconClass} fs-4 me-3"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        ${criteriaName ? `<strong>${criteriaName}:</strong> ` : ''}${item.description}
+                                        ${item.actual ? `<div class="text-muted small">Current: ${item.actual}</div>` : ''}
+                                        ${item.recommended ? `<div class="text-success small">Recommended: ${item.recommended}</div>` : ''}
+                                    </div>
                                 </div>
                             </li>
                             `;
@@ -704,9 +908,11 @@
                 
                 // Meta feedback
                 resultsHTML += `
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0"><i class="bi bi-card-text me-2"></i>Meta Description Feedback</h5>
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-body">
+                        <h5 class="mb-0 d-flex align-items-center">
+                            <i class="bi bi-card-text me-2"></i>Meta Description Feedback
+                        </h5>
                     </div>
                     <div class="card-body">
                         <ul class="list-group list-group-flush">
@@ -716,12 +922,22 @@
                 if (Array.isArray(data.meta_feedback) && data.meta_feedback.length > 0) {
                     data.meta_feedback.forEach(item => {
                         if (item && typeof item === 'object' && 'score' in item && 'description' in item) {
-                            const iconClass = (item.score > 0.5) ? 'bi-check-circle text-success' : 'bi-exclamation-circle text-danger';
+                            const iconClass = item.score >= 0.8 ? 'bi-check-circle-fill text-success' :
+                                            (item.score >= 0.5 ? 'bi-exclamation-triangle-fill text-warning' : 'bi-x-circle-fill text-danger');
+                            
+                            const criteriaName = item.criteria ? item.criteria.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : '';
+                            
                             resultsHTML += `
                             <li class="list-group-item bg-transparent px-0">
-                                <div class="d-flex align-items-center">
-                                    <i class="bi ${iconClass} fs-4 me-2"></i>
-                                    <span>${item.description}</span>
+                                <div class="d-flex">
+                                    <div class="flex-shrink-0">
+                                        <i class="bi ${iconClass} fs-4 me-3"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        ${criteriaName ? `<strong>${criteriaName}:</strong> ` : ''}${item.description}
+                                        ${item.actual ? `<div class="text-muted small">Current: ${item.actual}</div>` : ''}
+                                        ${item.recommended ? `<div class="text-success small">Recommended: ${item.recommended}</div>` : ''}
+                                    </div>
                                 </div>
                             </li>
                             `;
@@ -747,9 +963,11 @@
                 
                 // Content feedback
                 resultsHTML += `
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0"><i class="bi bi-file-earmark-text me-2"></i>Content Feedback</h5>
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-body">
+                        <h5 class="mb-0 d-flex align-items-center">
+                            <i class="bi bi-file-earmark-text me-2"></i>Content Feedback
+                        </h5>
                     </div>
                     <div class="card-body">
                         <ul class="list-group list-group-flush">
@@ -759,12 +977,22 @@
                 if (Array.isArray(data.content_feedback) && data.content_feedback.length > 0) {
                     data.content_feedback.forEach(item => {
                         if (item && typeof item === 'object' && 'score' in item && 'description' in item) {
-                            const iconClass = (item.score > 0.5) ? 'bi-check-circle text-success' : 'bi-exclamation-circle text-danger';
+                            const iconClass = item.score >= 0.8 ? 'bi-check-circle-fill text-success' :
+                                            (item.score >= 0.5 ? 'bi-exclamation-triangle-fill text-warning' : 'bi-x-circle-fill text-danger');
+                            
+                            const criteriaName = item.criteria ? item.criteria.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : '';
+                            
                             resultsHTML += `
                             <li class="list-group-item bg-transparent px-0">
-                                <div class="d-flex align-items-center">
-                                    <i class="bi ${iconClass} fs-4 me-2"></i>
-                                    <span>${item.description}</span>
+                                <div class="d-flex">
+                                    <div class="flex-shrink-0">
+                                        <i class="bi ${iconClass} fs-4 me-3"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        ${criteriaName ? `<strong>${criteriaName}:</strong> ` : ''}${item.description}
+                                        ${item.actual ? `<div class="text-muted small">Current: ${item.actual}</div>` : ''}
+                                        ${item.recommended ? `<div class="text-success small">Recommended: ${item.recommended}</div>` : ''}
+                                    </div>
                                 </div>
                             </li>
                             `;
@@ -790,28 +1018,25 @@
                 
                 document.getElementById('results').innerHTML = resultsHTML;
                 
-                // Initialize progress circles
-                initProgressCircles();
-            }
-
-            // Initialize progress circles function
-            function initProgressCircles() {
-                const circles = document.querySelectorAll('.progress-circle');
-                
-                circles.forEach(circle => {
-                    const value = circle.getAttribute('data-value');
-                    const left = circle.querySelector('.progress-circle-left .progress-circle-bar');
-                    const right = circle.querySelector('.progress-circle-right .progress-circle-bar');
+                // Animate the progress bars
+                setTimeout(() => {
+                    const progressBars = document.querySelectorAll('.progress-bar');
+                    progressBars.forEach(bar => {
+                        // Start with width 0
+                        bar.style.width = '0%';
+                        // Force reflow
+                        void bar.offsetWidth;
+                        // Animate to actual value
+                        bar.style.width = bar.getAttribute('aria-valuenow') + '%';
+                    });
                     
-                    if (value > 0) {
-                        if (value <= 50) {
-                            right.style.transform = 'rotate(' + (value / 100 * 360) + 'deg)';
-                        } else {
-                            right.style.transform = 'rotate(180deg)';
-                            left.style.transform = 'rotate(' + ((value - 50) / 100 * 360) + 'deg)';
-                        }
-                    }
-                });
+                    // Add active class to score number for animation
+                    const scoreNumbers = document.querySelectorAll('.score-number');
+                    scoreNumbers.forEach(number => {
+                        // Add active class to trigger animation
+                        number.classList.add('active');
+                    });
+                }, 100);
             }
         });
     </script>

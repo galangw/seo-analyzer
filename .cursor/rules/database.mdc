@@ -1,0 +1,24 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Database Structure
+
+The SEO Analyzer application uses Laravel's migrations to define the database schema.
+
+## Key Tables
+
+- `users` - User information
+- `contents` - User content to be analyzed
+- `seo_results` - SEO analysis results
+
+## Database Files
+
+- Migrations: [database/migrations](mdc:seo-analyzer/database/migrations)
+- Seeders: [database/seeders](mdc:seo-analyzer/database/seeders)
+- Factories: [database/factories](mdc:seo-analyzer/database/factories)
+
+## Configuration
+
+Database configuration is stored in the `.env` file, with defaults in [config/database.php](mdc:seo-analyzer/config/database.php)

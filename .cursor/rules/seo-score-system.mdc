@@ -1,0 +1,20 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# SEO Score System
+
+The application uses a color-coded scoring system for SEO analysis:
+
+- **Success (Green)**: Score ≥ 80% - Excellent SEO optimization
+- **Warning (Yellow/Orange)**: Score ≥ 50% and < 80% - Fair SEO optimization, needs improvement
+- **Danger (Red)**: Score < 50% - Poor SEO optimization, requires significant improvement
+
+This scoring logic is applied to overall scores and individual component scores (title, meta description, content).
+
+```javascript
+const scoreClass = score >= 80 ? 'success' : (score >= 50 ? 'warning' : 'danger');
+```
+
+The UI displays these scores with gradient-colored progress bars and text formatting that corresponds to the score level.

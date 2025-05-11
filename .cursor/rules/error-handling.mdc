@@ -1,0 +1,30 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Error Handling
+
+The application implements a comprehensive error handling system:
+
+## Form Validation
+- Client-side validation before submission
+- Checks for required fields (title, meta description, target keyword, content)
+- Displays validation errors in an error container
+
+## API Error Handling
+- Response status code checking
+- JSON parsing of error responses
+- Special handling for validation errors (422)
+- Specific handling for API key errors
+
+## UI Error Display
+- Error container shows formatted error messages
+- Bootstrap alert component with appropriate icons
+- Error scrolling to ensure visibility
+- Detailed error information when available from server
+
+## Recovery
+- Button state restoration after errors
+- Clear error messages between operations
+- Graceful degradation when services are unavailable

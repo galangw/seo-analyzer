@@ -1,0 +1,32 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Feedback Structure
+
+The SEO analysis system returns structured feedback objects which are rendered in the UI:
+
+## Feedback Object Format
+```javascript
+{
+  criteria: "keyword_in_title", // The assessment criteria name
+  score: 0.85,                  // Score between 0-1 (higher is better)
+  description: "The keyword is present in the title",
+  actual: "Current: 2 times",   // Optional current state
+  recommended: "Recommended: 1-2 times" // Optional recommendation
+}
+```
+
+## Feedback Categories
+1. **Title Feedback**: Assessment of page title SEO elements
+2. **Meta Feedback**: Assessment of meta description SEO elements
+3. **Content Feedback**: Assessment of main content SEO elements
+
+## Score Visualization
+- Each feedback item has an icon based on score:
+  - Score ≥ 0.8: Check circle (success)
+  - Score ≥ 0.5: Warning triangle (warning)
+  - Score < 0.5: X circle (danger)
+
+The feedback structure is designed to be easily extensible for new SEO criteria.

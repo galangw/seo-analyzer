@@ -1,0 +1,26 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Routes
+
+The SEO Analyzer application uses Laravel's routing system to handle HTTP requests:
+
+## Web Routes
+
+The [routes/web.php](mdc:seo-analyzer/routes/web.php) file defines the web routes for the application:
+
+- `/` - Landing page
+- `/dashboard` - User dashboard
+- `/content` - Content management
+- `/seo-results` - SEO analysis results
+- `/profile` - User profile management
+
+## API Routes
+
+The [routes/api.php](mdc:seo-analyzer/routes/api.php) file defines API endpoints:
+
+- `/api/content` - Content management API
+- `/api/seo-analysis` - Real-time SEO analysis
+- `/api/user` - User management API

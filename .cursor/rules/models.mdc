@@ -1,0 +1,28 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Models
+
+The SEO Analyzer application uses the following key models:
+
+## Content Model
+[Content.php](mdc:seo-analyzer/app/Models/Content.php) - Stores user content to be analyzed:
+- `title`: Page title to be analyzed
+- `meta_description`: Meta description text
+- `content`: Main content text
+- `target_keyword`: Keyword to optimize for
+- `user_id`: Reference to the content owner
+
+## SeoResult Model
+[SeoResult.php](mdc:seo-analyzer/app/Models/SeoResult.php) - Stores analysis results:
+- `content_id`: Reference to the analyzed content
+- `page_title_score`: Score for the page title (0-100)
+- `meta_description_score`: Score for meta description (0-100)
+- `content_score`: Score for content analysis (0-100)
+- `overall_score`: Overall SEO score (0-100)
+- `detail_score`: Detailed scoring information (JSON)
+
+## User Model
+[User.php](mdc:seo-analyzer/app/Models/User.php) - Standard Laravel user model with authentication support

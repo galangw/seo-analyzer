@@ -1,0 +1,23 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Services
+
+The SEO Analyzer application uses service classes to encapsulate the business logic:
+
+## Core Services
+
+- [SeoAnalyzerService.php](mdc:seo-analyzer/app/Services/SeoAnalyzerService.php) - Main service for analyzing content against SEO best practices:
+  - `analyzeContent()` - Performs full analysis and saves to database
+  - `performRealTimeAnalysis()` - Quick analysis without saving
+  - `analyzeAllComponents()` - Analyzes all components of content
+  - Various helper methods for specific analysis tasks
+
+- [ScoreCalculatorService.php](mdc:seo-analyzer/app/Services/ScoreCalculatorService.php) - Calculates scores for different SEO aspects
+
+## External Services
+
+- [GeminiService.php](mdc:seo-analyzer/app/Services/GeminiService.php) - Integrates with Google's Gemini AI for content suggestions
+- [WhatsAppService.php](mdc:seo-analyzer/app/Services/WhatsAppService.php) - Handles WhatsApp notifications
