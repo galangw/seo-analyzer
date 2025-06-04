@@ -1,105 +1,118 @@
 @extends('layouts.app')
 
 @section('content')
-<style>
-    /* Score display styles */
-    .score-container {
-        max-width: 300px;
-        margin: 0 auto;
-    }
-    
-    .score-value-display {
-        margin-bottom: 15px;
-        position: relative;
-    }
-    
-    .score-number {
-        font-size: 3.5rem;
-        font-weight: 700;
-        line-height: 1;
-        transition: all 0.5s ease;
-    }
-    
-    .score-danger {
-        background: linear-gradient(90deg, #dc3545, #f86032);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-    
-    .score-warning {
-        background: linear-gradient(90deg, #ffc107, #fd7e14);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-    
-    .score-success {
-        background: linear-gradient(90deg, #20c997, #28a745);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-    
-    .score-number.active {
-        animation: pulse 2s infinite;
-    }
-    
-    @keyframes pulse {
-        0% { opacity: 0.8; }
-        50% { opacity: 1; }
-        100% { opacity: 0.8; }
-    }
-    
-    .score-percent {
-        font-size: 1.5rem;
-        font-weight: 600;
-        color: #6c757d;
-        margin-left: 5px;
-    }
-    
-    .score-progress {
-        height: 12px;
-        border-radius: 10px;
-        background-color: #e9ecef;
-        box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-        margin-bottom: 15px;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .score-progress .progress-bar {
-        border-radius: 10px;
-        position: relative;
-        transition: width 1.5s cubic-bezier(0.09, 0.41, 0.41, 0.95);
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    
-    .score-progress .progress-bar::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.1) 100%);
-        animation: shimmer 2s infinite;
-    }
-    
-    @keyframes shimmer {
-        0% { transform: translateX(-100%); }
-        100% { transform: translateX(100%); }
-    }
-    
-    .bg-success {
-        background: linear-gradient(90deg, #28a745, #20c997) !important;
-    }
-    
-    .bg-warning {
-        background: linear-gradient(90deg, #ffc107, #fd7e14) !important;
-    }
-    
-    .bg-danger {
-        background: linear-gradient(90deg, #dc3545, #f86032) !important;
-    }
-</style>
+    <style>
+        /* Score display styles */
+        .score-container {
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .score-value-display {
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .score-number {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1;
+            transition: all 0.5s ease;
+        }
+
+        .score-danger {
+            background: linear-gradient(90deg, #dc3545, #f86032);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .score-warning {
+            background: linear-gradient(90deg, #ffc107, #fd7e14);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .score-success {
+            background: linear-gradient(90deg, #20c997, #28a745);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .score-number.active {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.8;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.8;
+            }
+        }
+
+        .score-percent {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #6c757d;
+            margin-left: 5px;
+        }
+
+        .score-progress {
+            height: 12px;
+            border-radius: 10px;
+            background-color: #e9ecef;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .score-progress .progress-bar {
+            border-radius: 10px;
+            position: relative;
+            transition: width 1.5s cubic-bezier(0.09, 0.41, 0.41, 0.95);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .score-progress .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0.1) 100%);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        .bg-success {
+            background: linear-gradient(90deg, #28a745, #20c997) !important;
+        }
+
+        .bg-warning {
+            background: linear-gradient(90deg, #ffc107, #fd7e14) !important;
+        }
+
+        .bg-danger {
+            background: linear-gradient(90deg, #dc3545, #f86032) !important;
+        }
+    </style>
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-8">
@@ -181,7 +194,8 @@
                         </div>
                         <div class="card-body text-center p-5">
                             <i class="bi bi-search display-1 text-body-secondary mb-3"></i>
-                            <p>Click "Preview Analysis" to see your SEO score without saving or "Update & Reanalyze" to save changes and analyze.</p>
+                            <p>Click "Preview Analysis" to see your SEO score without saving or "Update & Reanalyze" to save
+                                changes and analyze.</p>
                         </div>
                     </div>
                 </div>
@@ -203,7 +217,8 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Make sure Quill is available before initializing
             if (typeof Quill === 'undefined') {
-                console.error('Quill library not loaded. Check network connections or add a direct script include.');
+                console.error(
+                    'Quill library not loaded. Check network connections or add a direct script include.');
                 return;
             }
 
@@ -330,7 +345,7 @@
             function showError(message) {
                 const errorContainer = document.getElementById('error-container');
                 const errorMessage = document.getElementById('error-message');
-                
+
                 errorMessage.innerHTML = message;
                 errorContainer.style.display = 'block';
 
@@ -394,288 +409,306 @@
                 // Get content from Quill
                 const quillContent = quill.root.innerHTML;
                 contentInput.value = quillContent;
-                
+
                 // Get target keyword
                 const targetKeyword = document.getElementById('target_keyword').value.trim();
-                
+
                 // Validate required fields
                 if (!targetKeyword) {
                     showError('Target keyword is required for AI title suggestion');
                     return;
                 }
-                
+
                 if (!quillContent || quillContent === '<p><br></p>') {
                     showError('Content is required for AI title suggestion');
                     return;
                 }
-                
+
                 // Show loading state
                 const originalButtonText = this.innerHTML;
                 this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
                 this.disabled = true;
-                
+
                 // Create a new FormData instance
                 const formData = new FormData();
-                formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+                formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute(
+                    'content'));
                 formData.append('target_keyword', targetKeyword);
                 formData.append('content', quillContent);
-                
+
                 // Get the CSRF token from meta tag
                 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                
+
                 // Make AJAX request to title suggestion endpoint
                 fetch('{{ route('api.suggest-title') }}', {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken,
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.json().then(errorData => {
-                            throw { status: response.status, data: errorData };
-                        });
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Reset button state
-                    this.innerHTML = originalButtonText;
-                    this.disabled = false;
-                    
-                    if (data.success && data.title) {
-                        // Update title input with suggestion
-                        titleInput.value = data.title;
-                        titleInput.dispatchEvent(new Event('input')); // Trigger counter update
-                    } else {
-                        let errorMessage = data.message || 'Failed to generate title suggestion';
-                        console.error('AI Title Suggestion Error:', data);
-                        alert(errorMessage);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    this.innerHTML = originalButtonText;
-                    this.disabled = false;
-                    
-                    let errorMsg = 'An error occurred while generating title suggestion';
-                    
-                    if (error.status === 422 && error.data && error.data.message) {
-                        // Format validation errors
-                        let validationErrors = [];
-                        for (let field in error.data.message) {
-                            error.data.message[field].forEach(msg => {
-                                validationErrors.push(msg);
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken,
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.json().then(errorData => {
+                                throw {
+                                    status: response.status,
+                                    data: errorData
+                                };
                             });
                         }
-                        errorMsg = validationErrors.join('\n');
-                    } else if (error.data && error.data.message) {
-                        errorMsg = error.data.message;
-                        
-                        // Special handling for API key errors
-                        if (error.data.error_code === 'API_KEY_MISSING' || error.data.error_code === 'API_ERROR') {
-                            errorMsg += '\n\nPlease contact the administrator to check the Gemini API configuration.';
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Reset button state
+                        this.innerHTML = originalButtonText;
+                        this.disabled = false;
+
+                        if (data.success && data.title) {
+                            // Update title input with suggestion
+                            titleInput.value = data.title;
+                            titleInput.dispatchEvent(new Event('input')); // Trigger counter update
+                        } else {
+                            let errorMessage = data.message || 'Failed to generate title suggestion';
+                            console.error('AI Title Suggestion Error:', data);
+                            alert(errorMessage);
                         }
-                    } else if (error.message) {
-                        errorMsg += ': ' + error.message;
-                    }
-                    
-                    alert(errorMsg);
-                });
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        this.innerHTML = originalButtonText;
+                        this.disabled = false;
+
+                        let errorMsg = 'An error occurred while generating title suggestion';
+
+                        if (error.status === 422 && error.data && error.data.message) {
+                            // Format validation errors
+                            let validationErrors = [];
+                            for (let field in error.data.message) {
+                                error.data.message[field].forEach(msg => {
+                                    validationErrors.push(msg);
+                                });
+                            }
+                            errorMsg = validationErrors.join('\n');
+                        } else if (error.data && error.data.message) {
+                            errorMsg = error.data.message;
+
+                            // Special handling for API key errors
+                            if (error.data.error_code === 'API_KEY_MISSING' || error.data.error_code ===
+                                'API_ERROR') {
+                                errorMsg +=
+                                    '\n\nPlease contact the administrator to check the Gemini API configuration.';
+                            }
+                        } else if (error.message) {
+                            errorMsg += ': ' + error.message;
+                        }
+
+                        alert(errorMsg);
+                    });
             });
 
             // AI Meta Description Suggestion functionality
             document.getElementById('ai-meta-suggestion').addEventListener('click', function() {
                 // Hide any previous errors
                 hideError();
-                
+
                 // Get content from Quill
                 const quillContent = quill.root.innerHTML;
                 contentInput.value = quillContent;
-                
+
                 // Get target keyword
                 const targetKeyword = document.getElementById('target_keyword').value.trim();
-                
+
                 // Validate required fields
                 if (!targetKeyword) {
                     showError('Target keyword is required for AI meta description suggestion');
                     return;
                 }
-                
+
                 if (!quillContent || quillContent === '<p><br></p>') {
                     showError('Content is required for AI meta description suggestion');
                     return;
                 }
-                
+
                 // Show loading state
                 const originalButtonText = this.innerHTML;
                 this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
                 this.disabled = true;
-                
+
                 // Create a new FormData instance
                 const formData = new FormData();
-                formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+                formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute(
+                    'content'));
                 formData.append('target_keyword', targetKeyword);
                 formData.append('content', quillContent);
-                
+
                 // Get the CSRF token from meta tag
                 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                
+
                 // Make AJAX request to meta description suggestion endpoint
                 fetch('{{ route('api.suggest-meta-description') }}', {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken,
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.json().then(errorData => {
-                            throw { status: response.status, data: errorData };
-                        });
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Reset button state
-                    this.innerHTML = originalButtonText;
-                    this.disabled = false;
-                    
-                    if (data.success && data.meta_description) {
-                        // Update meta description input with suggestion
-                        metaDescription.value = data.meta_description;
-                        metaDescription.dispatchEvent(new Event('input')); // Trigger counter update
-                    } else {
-                        let errorMessage = data.message || 'Failed to generate meta description suggestion';
-                        console.error('AI Meta Description Suggestion Error:', data);
-                        showError(errorMessage);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    this.innerHTML = originalButtonText;
-                    this.disabled = false;
-                    
-                    let errorMsg = 'An error occurred while generating meta description suggestion';
-                    
-                    if (error.status === 422 && error.data && error.data.message) {
-                        // Format validation errors
-                        let validationErrors = [];
-                        for (let field in error.data.message) {
-                            error.data.message[field].forEach(msg => {
-                                validationErrors.push(msg);
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken,
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.json().then(errorData => {
+                                throw {
+                                    status: response.status,
+                                    data: errorData
+                                };
                             });
                         }
-                        errorMsg = validationErrors.join('<br>');
-                    } else if (error.data && error.data.message) {
-                        errorMsg = error.data.message;
-                        
-                        // Special handling for API key errors
-                        if (error.data.error_code === 'API_KEY_MISSING' || error.data.error_code === 'API_ERROR') {
-                            errorMsg += '<br><br>Please contact the administrator to check the Gemini API configuration.';
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Reset button state
+                        this.innerHTML = originalButtonText;
+                        this.disabled = false;
+
+                        if (data.success && data.meta_description) {
+                            // Update meta description input with suggestion
+                            metaDescription.value = data.meta_description;
+                            metaDescription.dispatchEvent(new Event('input')); // Trigger counter update
+                        } else {
+                            let errorMessage = data.message ||
+                                'Failed to generate meta description suggestion';
+                            console.error('AI Meta Description Suggestion Error:', data);
+                            showError(errorMessage);
                         }
-                    } else if (error.message) {
-                        errorMsg += ': ' + error.message;
-                    }
-                    
-                    showError(errorMsg);
-                });
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        this.innerHTML = originalButtonText;
+                        this.disabled = false;
+
+                        let errorMsg = 'An error occurred while generating meta description suggestion';
+
+                        if (error.status === 422 && error.data && error.data.message) {
+                            // Format validation errors
+                            let validationErrors = [];
+                            for (let field in error.data.message) {
+                                error.data.message[field].forEach(msg => {
+                                    validationErrors.push(msg);
+                                });
+                            }
+                            errorMsg = validationErrors.join('<br>');
+                        } else if (error.data && error.data.message) {
+                            errorMsg = error.data.message;
+
+                            // Special handling for API key errors
+                            if (error.data.error_code === 'API_KEY_MISSING' || error.data.error_code ===
+                                'API_ERROR') {
+                                errorMsg +=
+                                    '<br><br>Please contact the administrator to check the Gemini API configuration.';
+                            }
+                        } else if (error.message) {
+                            errorMsg += ': ' + error.message;
+                        }
+
+                        showError(errorMsg);
+                    });
             });
 
             // Update content
             updateButton.addEventListener('click', function() {
                 // Hide any previous errors
                 hideError();
-                
+
                 // Check if form is valid
                 if (!validateForm()) {
                     return; // validateForm will display errors
                 }
-                
+
                 // Get content from Quill and set it to hidden input
                 const latestContent = quill.root.innerHTML;
                 contentInput.value = latestContent;
-                
+
                 console.log('Content before submission:', contentInput.value);
                 console.log('Content length:', contentInput.value.length);
 
                 // Double-check if content is empty and show a more specific error
-                if (!contentInput.value || contentInput.value.trim() === '' || contentInput.value === '<p><br></p>') {
+                if (!contentInput.value || contentInput.value.trim() === '' || contentInput.value ===
+                    '<p><br></p>') {
                     showError('Content cannot be empty. Please add some content before submitting.');
                     return;
                 }
 
                 // Show loading state
-                this.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Updating...';
+                this.innerHTML =
+                    '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Updating...';
                 this.disabled = true;
 
                 // Collect form data
                 const formData = new FormData();
-                
+
                 // Add all the form fields manually
-                formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+                formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute(
+                    'content'));
                 formData.append('_method', 'PUT');
                 formData.append('title', titleInput.value);
                 formData.append('meta_description', metaDescription.value);
                 formData.append('target_keyword', document.getElementById('target_keyword').value);
-                
+
                 // Ensure content from Quill is properly added
                 formData.append('content', contentInput.value);
-                
+
                 // Add request ID to prevent duplicate submissions
                 const requestId = 'req_update_' + Date.now();
                 formData.append('request_id', requestId);
                 console.log('Update request ID:', requestId);
-                
+
                 // Explicitly set reanalyze flag to true
                 formData.append('reanalyze', 'true');
-                
+
                 // Make the PUT request
                 fetch(form.getAttribute('action'), {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        // Try to get details from the error response if possible
-                        return response.json().then(errorData => {
-                            throw new Error(errorData.message || `Server returned ${response.status}`);
-                        }).catch(e => {
-                            // If we can't parse the JSON, just throw the status
-                            throw new Error(`Server returned ${response.status}`);
-                        });
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.success) {
-                        // Redirect to the result page
-                        window.location.href = data.redirect;
-                    } else {
-                        throw new Error(data.message || 'An error occurred.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    
-                    // Show a more user-friendly error
-                    let errorMessage = error.message || 'An unknown error occurred';
-                    
-                    // Create a detailed error message for the alert
-                    showError('Error updating content: ' + errorMessage);
-                    
-                    // Reset button
-                    this.innerHTML = '<i class="bi bi-save me-1"></i> Update & Reanalyze';
-                    this.disabled = false;
-                });
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                .getAttribute('content'),
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            // Try to get details from the error response if possible
+                            return response.json().then(errorData => {
+                                throw new Error(errorData.message ||
+                                    `Server returned ${response.status}`);
+                            }).catch(e => {
+                                // If we can't parse the JSON, just throw the status
+                                throw new Error(`Server returned ${response.status}`);
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success) {
+                            // Redirect to the result page
+                            window.location.href = data.redirect;
+                        } else {
+                            throw new Error(data.message || 'An error occurred.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+
+                        // Show a more user-friendly error
+                        let errorMessage = error.message || 'An unknown error occurred';
+
+                        // Create a detailed error message for the alert
+                        showError('Error updating content: ' + errorMessage);
+
+                        // Reset button
+                        this.innerHTML = '<i class="bi bi-save me-1"></i> Update & Reanalyze';
+                        this.disabled = false;
+                    });
             });
 
             // Prevent the form from being submitted directly
@@ -688,67 +721,71 @@
             document.getElementById('preview-button').addEventListener('click', function() {
                 // Hide any previous errors
                 hideError();
-                
+
                 // Check if form is valid
                 if (!validateForm()) {
                     return; // validateForm will display errors
                 }
-                
+
                 // Get content from Quill and set it to hidden input
                 const latestContent = quill.root.innerHTML;
                 contentInput.value = latestContent;
-                
+
                 // Show loading state
-                this.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Analyzing...';
+                this.innerHTML =
+                    '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Analyzing...';
                 this.disabled = true;
 
                 // Collect form data
                 const formData = new FormData();
-                formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+                formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute(
+                    'content'));
                 formData.append('title', titleInput.value);
                 formData.append('meta_description', metaDescription.value);
                 formData.append('target_keyword', document.getElementById('target_keyword').value);
                 formData.append('content', contentInput.value);
-                
+
                 // Make the request to the analyze-content endpoint
                 fetch('{{ route('api.analyze-content') }}', {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.json().then(errorData => {
-                            throw new Error(errorData.message || `Server returned ${response.status}`);
-                        });
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Reset button
-                    this.innerHTML = '<i class="bi bi-search me-1"></i> Preview Analysis';
-                    this.disabled = false;
-                    
-                    if (data.success) {
-                        // Display the analysis results
-                        displayResults(data);
-                    } else {
-                        throw new Error(data.message || 'An error occurred.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    
-                    // Reset button
-                    this.innerHTML = '<i class="bi bi-search me-1"></i> Preview Analysis';
-                    this.disabled = false;
-                    
-                    // Show error message
-                    showError('Error analyzing content: ' + error.message);
-                });
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                                .getAttribute('content'),
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.json().then(errorData => {
+                                throw new Error(errorData.message ||
+                                    `Server returned ${response.status}`);
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Reset button
+                        this.innerHTML = '<i class="bi bi-search me-1"></i> Preview Analysis';
+                        this.disabled = false;
+
+                        if (data.success) {
+                            // Display the analysis results
+                            displayResults(data);
+                        } else {
+                            throw new Error(data.message || 'An error occurred.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+
+                        // Reset button
+                        this.innerHTML = '<i class="bi bi-search me-1"></i> Preview Analysis';
+                        this.disabled = false;
+
+                        // Show error message
+                        showError('Error analyzing content: ' + error.message);
+                    });
             });
 
             // Display results function
@@ -768,17 +805,18 @@
                     `;
                     return;
                 }
-                
+
                 const score = data.score || 0;
                 const titleScore = data.title_score || 0;
                 const metaScore = data.meta_score || 0;
                 const contentScore = data.content_score || 0;
-                
+
                 const scoreClass = score >= 80 ? 'success' : (score >= 50 ? 'warning' : 'danger');
                 const titleScoreClass = titleScore >= 80 ? 'success' : (titleScore >= 50 ? 'warning' : 'danger');
                 const metaScoreClass = metaScore >= 80 ? 'success' : (metaScore >= 50 ? 'warning' : 'danger');
-                const contentScoreClass = contentScore >= 80 ? 'success' : (contentScore >= 50 ? 'warning' : 'danger');
-                
+                const contentScoreClass = contentScore >= 80 ? 'success' : (contentScore >= 50 ? 'warning' :
+                    'danger');
+
                 let resultsHTML = `
                 <div class="card border-0 shadow-sm mb-4">
                     <div class="card-header bg-body">
@@ -790,14 +828,14 @@
                         <div class="text-center mb-4">
                             <div class="score-container">
                                 <div class="score-value-display">
-                                    <span class="score-number score-${scoreClass}">${Math.round(score)}</span>
+                                    <span class="score-number score-${scoreClass}">${score}</span>
                                     <span class="score-percent">%</span>
                                 </div>
                                 <div class="progress score-progress">
-                                    <div class="progress-bar bg-${scoreClass}" role="progressbar" 
-                                         style="width: ${Math.round(score)}%" 
-                                         aria-valuenow="${Math.round(score)}" 
-                                         aria-valuemin="0" 
+                                    <div class="progress-bar bg-${scoreClass}" role="progressbar"
+                                         style="width: ${Math.round(score)}%"
+                                         aria-valuenow="${Math.round(score)}"
+                                         aria-valuemin="0"
                                          aria-valuemax="100">
                                     </div>
                                 </div>
@@ -808,17 +846,17 @@
                                 </p>
                             </div>
                         </div>
-                        
+
                         <div class="row g-3">
                             <div class="col-md-4">
                                 <div class="card border-0 bg-body h-100">
                                     <div class="card-body text-center">
                                         <h6 class="fw-bold mb-2">Page Title</h6>
                                         <div class="progress mb-2" style="height: 10px;">
-                                            <div class="progress-bar bg-${titleScoreClass}" role="progressbar" style="width: ${titleScore}%" 
+                                            <div class="progress-bar bg-${titleScoreClass}" role="progressbar" style="width: ${titleScore}%"
                                                 aria-valuenow="${titleScore}" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <p class="small mb-0">${Math.round(titleScore)}%</p>
+                                        <p class="small mb-0">${titleScore}%</p>
                                     </div>
                                 </div>
                             </div>
@@ -827,10 +865,10 @@
                                     <div class="card-body text-center">
                                         <h6 class="fw-bold mb-2">Meta Description</h6>
                                         <div class="progress mb-2" style="height: 10px;">
-                                            <div class="progress-bar bg-${metaScoreClass}" role="progressbar" style="width: ${metaScore}%" 
+                                            <div class="progress-bar bg-${metaScoreClass}" role="progressbar" style="width: ${metaScore}%"
                                                 aria-valuenow="${metaScore}" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <p class="small mb-0">${Math.round(data.meta_score)}%</p>
+                                        <p class="small mb-0">${data.meta_score}%</p>
                                     </div>
                                 </div>
                             </div>
@@ -839,10 +877,10 @@
                                     <div class="card-body text-center">
                                         <h6 class="fw-bold mb-2">Content</h6>
                                         <div class="progress mb-2" style="height: 10px;">
-                                            <div class="progress-bar bg-${contentScoreClass}" role="progressbar" style="width: ${data.content_score}%" 
+                                            <div class="progress-bar bg-${contentScoreClass}" role="progressbar" style="width: ${data.content_score}%"
                                                 aria-valuenow="${data.content_score}" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <p class="small mb-0">${Math.round(data.content_score)}%</p>
+                                        <p class="small mb-0">${data.content_score}%</p>
                                     </div>
                                 </div>
                             </div>
@@ -850,7 +888,7 @@
                     </div>
                 </div>
                 `;
-                
+
                 // Title feedback
                 resultsHTML += `
                 <div class="card border-0 shadow-sm mb-4">
@@ -862,16 +900,18 @@
                     <div class="card-body">
                         <ul class="list-group list-group-flush">
                 `;
-                
+
                 // Check if title_feedback exists and is an array
                 if (Array.isArray(data.title_feedback) && data.title_feedback.length > 0) {
                     data.title_feedback.forEach(item => {
                         if (item && typeof item === 'object' && 'score' in item && 'description' in item) {
                             const iconClass = item.score >= 0.8 ? 'bi-check-circle-fill text-success' :
-                                            (item.score >= 0.5 ? 'bi-exclamation-triangle-fill text-warning' : 'bi-x-circle-fill text-danger');
-                            
-                            const criteriaName = item.criteria ? item.criteria.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : '';
-                            
+                                (item.score >= 0.5 ? 'bi-exclamation-triangle-fill text-warning' :
+                                    'bi-x-circle-fill text-danger');
+
+                            const criteriaName = item.criteria ? item.criteria.replace(/_/g, ' ').replace(
+                                /\b\w/g, c => c.toUpperCase()) : '';
+
                             resultsHTML += `
                             <li class="list-group-item bg-transparent px-0">
                                 <div class="d-flex">
@@ -899,13 +939,13 @@
                     </li>
                     `;
                 }
-                
+
                 resultsHTML += `
                         </ul>
                     </div>
                 </div>
                 `;
-                
+
                 // Meta feedback
                 resultsHTML += `
                 <div class="card border-0 shadow-sm mb-4">
@@ -917,16 +957,18 @@
                     <div class="card-body">
                         <ul class="list-group list-group-flush">
                 `;
-                
+
                 // Check if meta_feedback exists and is an array
                 if (Array.isArray(data.meta_feedback) && data.meta_feedback.length > 0) {
                     data.meta_feedback.forEach(item => {
                         if (item && typeof item === 'object' && 'score' in item && 'description' in item) {
                             const iconClass = item.score >= 0.8 ? 'bi-check-circle-fill text-success' :
-                                            (item.score >= 0.5 ? 'bi-exclamation-triangle-fill text-warning' : 'bi-x-circle-fill text-danger');
-                            
-                            const criteriaName = item.criteria ? item.criteria.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : '';
-                            
+                                (item.score >= 0.5 ? 'bi-exclamation-triangle-fill text-warning' :
+                                    'bi-x-circle-fill text-danger');
+
+                            const criteriaName = item.criteria ? item.criteria.replace(/_/g, ' ').replace(
+                                /\b\w/g, c => c.toUpperCase()) : '';
+
                             resultsHTML += `
                             <li class="list-group-item bg-transparent px-0">
                                 <div class="d-flex">
@@ -954,13 +996,13 @@
                     </li>
                     `;
                 }
-                
+
                 resultsHTML += `
                         </ul>
                     </div>
                 </div>
                 `;
-                
+
                 // Content feedback
                 resultsHTML += `
                 <div class="card border-0 shadow-sm mb-4">
@@ -972,16 +1014,18 @@
                     <div class="card-body">
                         <ul class="list-group list-group-flush">
                 `;
-                
+
                 // Check if content_feedback exists and is an array
                 if (Array.isArray(data.content_feedback) && data.content_feedback.length > 0) {
                     data.content_feedback.forEach(item => {
                         if (item && typeof item === 'object' && 'score' in item && 'description' in item) {
                             const iconClass = item.score >= 0.8 ? 'bi-check-circle-fill text-success' :
-                                            (item.score >= 0.5 ? 'bi-exclamation-triangle-fill text-warning' : 'bi-x-circle-fill text-danger');
-                            
-                            const criteriaName = item.criteria ? item.criteria.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : '';
-                            
+                                (item.score >= 0.5 ? 'bi-exclamation-triangle-fill text-warning' :
+                                    'bi-x-circle-fill text-danger');
+
+                            const criteriaName = item.criteria ? item.criteria.replace(/_/g, ' ').replace(
+                                /\b\w/g, c => c.toUpperCase()) : '';
+
                             resultsHTML += `
                             <li class="list-group-item bg-transparent px-0">
                                 <div class="d-flex">
@@ -1009,15 +1053,15 @@
                     </li>
                     `;
                 }
-                
+
                 resultsHTML += `
                         </ul>
                     </div>
                 </div>
                 `;
-                
+
                 document.getElementById('results').innerHTML = resultsHTML;
-                
+
                 // Animate the progress bars
                 setTimeout(() => {
                     const progressBars = document.querySelectorAll('.progress-bar');
@@ -1029,7 +1073,7 @@
                         // Animate to actual value
                         bar.style.width = bar.getAttribute('aria-valuenow') + '%';
                     });
-                    
+
                     // Add active class to score number for animation
                     const scoreNumbers = document.querySelectorAll('.score-number');
                     scoreNumbers.forEach(number => {

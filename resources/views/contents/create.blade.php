@@ -1,14 +1,19 @@
 @extends('layouts.app')
 @section('title', 'SEO Meter')
 @section('head')
-<style>
-     .bi.spinning {
+    <style>
+        .bi.spinning {
             animation: spin 1s linear infinite;
         }
 
         @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         .quill-editor .ql-container {
@@ -86,71 +91,79 @@
             max-width: 300px;
             margin: 0 auto;
         }
-        
+
         .score-value-display {
             margin-bottom: 15px;
             position: relative;
         }
-        
+
         .score-number {
             font-size: 3.5rem;
             font-weight: 700;
             line-height: 1;
             transition: all 0.5s ease;
         }
-        
+
         .score-danger {
             background: linear-gradient(90deg, #dc3545, #f86032);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        
+
         .score-warning {
             background: linear-gradient(90deg, #ffc107, #fd7e14);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        
+
         .score-success {
             background: linear-gradient(90deg, #20c997, #28a745);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        
+
         .score-number.active {
             animation: pulse 2s infinite;
         }
-        
+
         @keyframes pulse {
-            0% { opacity: 0.8; }
-            50% { opacity: 1; }
-            100% { opacity: 0.8; }
+            0% {
+                opacity: 0.8;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.8;
+            }
         }
-        
+
         .score-percent {
             font-size: 1.5rem;
             font-weight: 600;
             color: #6c757d;
             margin-left: 5px;
         }
-        
+
         .score-progress {
             height: 12px;
             border-radius: 10px;
             background-color: #e9ecef;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
             margin-bottom: 15px;
             position: relative;
             overflow: hidden;
         }
-        
+
         .score-progress .progress-bar {
             border-radius: 10px;
             position: relative;
             transition: width 1s ease;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-        
+
         .score-progress .progress-bar::after {
             content: '';
             position: absolute;
@@ -158,27 +171,32 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.1) 100%);
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0.1) 100%);
             animation: shimmer 2s infinite;
         }
-        
+
         @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
         }
-        
+
         .bg-success {
             background: linear-gradient(90deg, #28a745, #20c997) !important;
         }
-        
+
         .bg-warning {
             background: linear-gradient(90deg, #ffc107, #fd7e14) !important;
         }
-        
+
         .bg-danger {
             background: linear-gradient(90deg, #dc3545, #f86032) !important;
         }
-</style>
+    </style>
 @endsection
 
 @section('content')
@@ -204,7 +222,8 @@
                                     </button>
                                 </div>
                                 <div class="d-flex justify-content-between mt-1">
-                                    <small class="text-body-secondary">Optimal length: 75-95 characters (40-120 acceptable)</small>
+                                    <small class="text-body-secondary">Optimal length: 75-95 characters (40-120
+                                        acceptable)</small>
                                     <small id="title-counter" class="badge rounded-pill bg-secondary">0 characters</small>
                                 </div>
                             </div>
@@ -219,7 +238,8 @@
                                     </button>
                                 </div>
                                 <div class="d-flex justify-content-between mt-1">
-                                    <small class="text-body-secondary">Optimal length: 146-160 characters (100-160 acceptable)</small>
+                                    <small class="text-body-secondary">Optimal length: 146-160 characters (100-160
+                                        acceptable)</small>
                                     <small id="meta-counter" class="badge rounded-pill bg-secondary">0 characters</small>
                                 </div>
                             </div>
@@ -288,7 +308,8 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Make sure Quill is available before initializing
             if (typeof Quill === 'undefined') {
-                console.error('Quill library not loaded. Check network connections or add a direct script include.');
+                console.error(
+                'Quill library not loaded. Check network connections or add a direct script include.');
                 return;
             }
 
@@ -502,7 +523,8 @@
 
                 // Create a new FormData instance
                 const formData = new FormData();
-                formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+                formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute(
+                    'content'));
                 formData.append('target_keyword', targetKeyword);
                 formData.append('content', quillContent);
 
@@ -511,65 +533,70 @@
 
                 // Make AJAX request to title suggestion endpoint
                 fetch('{{ route('api.suggest-title') }}', {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken,
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.json().then(errorData => {
-                            throw { status: response.status, data: errorData };
-                        });
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Reset button state
-                    this.innerHTML = originalButtonText;
-                    this.disabled = false;
-
-                    if (data.success && data.title) {
-                        // Update title input with suggestion
-                        titleInput.value = data.title;
-                        titleInput.dispatchEvent(new Event('input')); // Trigger counter update
-                    } else {
-                        let errorMessage = data.message || 'Failed to generate title suggestion';
-                        console.error('AI Title Suggestion Error:', data);
-                        showError(errorMessage);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    this.innerHTML = originalButtonText;
-                    this.disabled = false;
-
-                    let errorMsg = 'An error occurred while generating title suggestion';
-
-                    if (error.status === 422 && error.data && error.data.message) {
-                        // Format validation errors
-                        let validationErrors = [];
-                        for (let field in error.data.message) {
-                            error.data.message[field].forEach(msg => {
-                                validationErrors.push(msg);
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken,
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.json().then(errorData => {
+                                throw {
+                                    status: response.status,
+                                    data: errorData
+                                };
                             });
                         }
-                        errorMsg = validationErrors.join('<br>');
-                    } else if (error.data && error.data.message) {
-                        errorMsg = error.data.message;
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Reset button state
+                        this.innerHTML = originalButtonText;
+                        this.disabled = false;
 
-                        // Special handling for API key errors
-                        if (error.data.error_code === 'API_KEY_MISSING' || error.data.error_code === 'API_ERROR') {
-                            errorMsg += '<br><br>Please contact the administrator to check the Gemini API configuration.';
+                        if (data.success && data.title) {
+                            // Update title input with suggestion
+                            titleInput.value = data.title;
+                            titleInput.dispatchEvent(new Event('input')); // Trigger counter update
+                        } else {
+                            let errorMessage = data.message || 'Failed to generate title suggestion';
+                            console.error('AI Title Suggestion Error:', data);
+                            showError(errorMessage);
                         }
-                    } else if (error.message) {
-                        errorMsg += ': ' + error.message;
-                    }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        this.innerHTML = originalButtonText;
+                        this.disabled = false;
 
-                    showError(errorMsg);
-                });
+                        let errorMsg = 'An error occurred while generating title suggestion';
+
+                        if (error.status === 422 && error.data && error.data.message) {
+                            // Format validation errors
+                            let validationErrors = [];
+                            for (let field in error.data.message) {
+                                error.data.message[field].forEach(msg => {
+                                    validationErrors.push(msg);
+                                });
+                            }
+                            errorMsg = validationErrors.join('<br>');
+                        } else if (error.data && error.data.message) {
+                            errorMsg = error.data.message;
+
+                            // Special handling for API key errors
+                            if (error.data.error_code === 'API_KEY_MISSING' || error.data.error_code ===
+                                'API_ERROR') {
+                                errorMsg +=
+                                    '<br><br>Please contact the administrator to check the Gemini API configuration.';
+                            }
+                        } else if (error.message) {
+                            errorMsg += ': ' + error.message;
+                        }
+
+                        showError(errorMsg);
+                    });
             });
 
             // AI Meta Description Suggestion functionality
@@ -602,7 +629,8 @@
 
                 // Create a new FormData instance
                 const formData = new FormData();
-                formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+                formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute(
+                    'content'));
                 formData.append('target_keyword', targetKeyword);
                 formData.append('content', quillContent);
 
@@ -611,65 +639,71 @@
 
                 // Make AJAX request to meta description suggestion endpoint
                 fetch('{{ route('api.suggest-meta-description') }}', {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken,
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.json().then(errorData => {
-                            throw { status: response.status, data: errorData };
-                        });
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Reset button state
-                    this.innerHTML = originalButtonText;
-                    this.disabled = false;
-
-                    if (data.success && data.meta_description) {
-                        // Update meta description input with suggestion
-                        metaDescription.value = data.meta_description;
-                        metaDescription.dispatchEvent(new Event('input')); // Trigger counter update
-                    } else {
-                        let errorMessage = data.message || 'Failed to generate meta description suggestion';
-                        console.error('AI Meta Description Suggestion Error:', data);
-                        showError(errorMessage);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    this.innerHTML = originalButtonText;
-                    this.disabled = false;
-
-                    let errorMsg = 'An error occurred while generating meta description suggestion';
-
-                    if (error.status === 422 && error.data && error.data.message) {
-                        // Format validation errors
-                        let validationErrors = [];
-                        for (let field in error.data.message) {
-                            error.data.message[field].forEach(msg => {
-                                validationErrors.push(msg);
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken,
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.json().then(errorData => {
+                                throw {
+                                    status: response.status,
+                                    data: errorData
+                                };
                             });
                         }
-                        errorMsg = validationErrors.join('<br>');
-                    } else if (error.data && error.data.message) {
-                        errorMsg = error.data.message;
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Reset button state
+                        this.innerHTML = originalButtonText;
+                        this.disabled = false;
 
-                        // Special handling for API key errors
-                        if (error.data.error_code === 'API_KEY_MISSING' || error.data.error_code === 'API_ERROR') {
-                            errorMsg += '<br><br>Please contact the administrator to check the Gemini API configuration.';
+                        if (data.success && data.meta_description) {
+                            // Update meta description input with suggestion
+                            metaDescription.value = data.meta_description;
+                            metaDescription.dispatchEvent(new Event('input')); // Trigger counter update
+                        } else {
+                            let errorMessage = data.message ||
+                                'Failed to generate meta description suggestion';
+                            console.error('AI Meta Description Suggestion Error:', data);
+                            showError(errorMessage);
                         }
-                    } else if (error.message) {
-                        errorMsg += ': ' + error.message;
-                    }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        this.innerHTML = originalButtonText;
+                        this.disabled = false;
 
-                    showError(errorMsg);
-                });
+                        let errorMsg = 'An error occurred while generating meta description suggestion';
+
+                        if (error.status === 422 && error.data && error.data.message) {
+                            // Format validation errors
+                            let validationErrors = [];
+                            for (let field in error.data.message) {
+                                error.data.message[field].forEach(msg => {
+                                    validationErrors.push(msg);
+                                });
+                            }
+                            errorMsg = validationErrors.join('<br>');
+                        } else if (error.data && error.data.message) {
+                            errorMsg = error.data.message;
+
+                            // Special handling for API key errors
+                            if (error.data.error_code === 'API_KEY_MISSING' || error.data.error_code ===
+                                'API_ERROR') {
+                                errorMsg +=
+                                    '<br><br>Please contact the administrator to check the Gemini API configuration.';
+                            }
+                        } else if (error.message) {
+                            errorMsg += ': ' + error.message;
+                        }
+
+                        showError(errorMsg);
+                    });
             });
 
             // Real-time analysis on button click
@@ -710,7 +744,8 @@
                 const formData = new FormData();
 
                 // Add form fields manually to ensure proper encoding
-                formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+                formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute(
+                    'content'));
                 formData.append('title', titleInput.value);
                 formData.append('meta_description', metaDescription.value);
                 formData.append('target_keyword', document.getElementById('target_keyword').value);
@@ -727,38 +762,41 @@
 
                 // Make AJAX request to analyze endpoint
                 fetch('{{ route('api.analyze-content') }}', {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken
-                    }
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.json().then(errorData => {
-                            throw { status: response.status, data: errorData };
-                        });
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Log full response data
-                    console.log("Success response:", data);
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.json().then(errorData => {
+                                throw {
+                                    status: response.status,
+                                    data: errorData
+                                };
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Log full response data
+                        console.log("Success response:", data);
 
-                    // Make sure we have the required data properties before proceeding
-                    if (!data.success ||
-                        data.score === undefined ||
-                        data.title_score === undefined ||
-                        data.meta_score === undefined ||
-                        data.content_score === undefined ||
-                        !data.title_feedback ||
-                        !data.meta_feedback ||
-                        !data.content_feedback) {
+                        // Make sure we have the required data properties before proceeding
+                        if (!data.success ||
+                            data.score === undefined ||
+                            data.title_score === undefined ||
+                            data.meta_score === undefined ||
+                            data.content_score === undefined ||
+                            !data.title_feedback ||
+                            !data.meta_feedback ||
+                            !data.content_feedback) {
 
-                        console.error("Invalid data format received:", data);
-                        showError("Server returned an invalid data format. Please try again.");
+                            console.error("Invalid data format received:", data);
+                            showError("Server returned an invalid data format. Please try again.");
 
-                        document.getElementById('results').innerHTML = `
+                            document.getElementById('results').innerHTML = `
                         <div class="card border-0 shadow-sm">
                             <div class="card-header bg-transparent">
                                 <h5 class="mb-0 d-flex align-items-center">
@@ -771,35 +809,35 @@
                             </div>
                         </div>
                         `;
-                        return;
-                    }
-
-                    // Display results
-                    displayResults(data);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-
-                    let errorMsg = 'An error occurred while analyzing your content';
-
-                    // Handle validation errors (422)
-                    if (error.status === 422 && error.data && error.data.message) {
-                        // Format validation errors
-                        let validationErrors = [];
-                        for (let field in error.data.message) {
-                            error.data.message[field].forEach(msg => {
-                                validationErrors.push(msg);
-                            });
+                            return;
                         }
-                        errorMsg = validationErrors.join('<br>');
-                    } else if (error.message) {
-                        errorMsg += ': ' + error.message;
-                    } else if (error.status) {
-                        errorMsg += ': Server returned ' + error.status;
-                    }
 
-                    showError(errorMsg);
-                    document.getElementById('results').innerHTML = `
+                        // Display results
+                        displayResults(data);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+
+                        let errorMsg = 'An error occurred while analyzing your content';
+
+                        // Handle validation errors (422)
+                        if (error.status === 422 && error.data && error.data.message) {
+                            // Format validation errors
+                            let validationErrors = [];
+                            for (let field in error.data.message) {
+                                error.data.message[field].forEach(msg => {
+                                    validationErrors.push(msg);
+                                });
+                            }
+                            errorMsg = validationErrors.join('<br>');
+                        } else if (error.message) {
+                            errorMsg += ': ' + error.message;
+                        } else if (error.status) {
+                            errorMsg += ': Server returned ' + error.status;
+                        }
+
+                        showError(errorMsg);
+                        document.getElementById('results').innerHTML = `
                     <div class="card border-0 shadow-sm">
                         <div class="card-header bg-transparent">
                             <h5 class="mb-0 d-flex align-items-center">
@@ -812,7 +850,7 @@
                         </div>
                     </div>
                     `;
-                });
+                    });
             });
 
             // Display results function
@@ -829,7 +867,8 @@
 
                 const titleScoreClass = titleScore >= 80 ? 'success' : (titleScore >= 50 ? 'warning' : 'danger');
                 const metaScoreClass = metaScore >= 80 ? 'success' : (metaScore >= 50 ? 'warning' : 'danger');
-                const contentScoreClass = contentScore >= 80 ? 'success' : (contentScore >= 50 ? 'warning' : 'danger');
+                const contentScoreClass = contentScore >= 80 ? 'success' : (contentScore >= 50 ? 'warning' :
+                    'danger');
 
                 let resultsHTML = `
                 <div class="card border-0 shadow-sm mb-4">
@@ -842,14 +881,14 @@
                         <div class="text-center mb-4">
                             <div class="score-container">
                                 <div class="score-value-display">
-                                    <span class="score-number score-${scoreClass}">${Math.round(overallScore)}</span>
+                                    <span class="score-number score-${scoreClass}">${overallScore}</span>
                                     <span class="score-percent">%</span>
                                 </div>
                                 <div class="progress score-progress">
-                                    <div class="progress-bar bg-${scoreClass}" role="progressbar" 
-                                         style="width: ${Math.round(overallScore)}%" 
-                                         aria-valuenow="${Math.round(overallScore)}" 
-                                         aria-valuemin="0" 
+                                    <div class="progress-bar bg-${scoreClass}" role="progressbar"
+                                         style="width: ${Math.round(overallScore)}%"
+                                         aria-valuenow="${Math.round(overallScore)}"
+                                         aria-valuemin="0"
                                          aria-valuemax="100">
                                     </div>
                                 </div>
@@ -925,9 +964,11 @@
                 if (Array.isArray(data.title_feedback)) {
                     data.title_feedback.forEach(item => {
                         const iconClass = item.score >= 0.8 ? 'bi-check-circle-fill text-success' :
-                                        (item.score >= 0.5 ? 'bi-exclamation-triangle-fill text-warning' : 'bi-x-circle-fill text-danger');
+                            (item.score >= 0.5 ? 'bi-exclamation-triangle-fill text-warning' :
+                                'bi-x-circle-fill text-danger');
 
-                        const criteriaName = item.criteria.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                        const criteriaName = item.criteria.replace(/_/g, ' ').replace(/\b\w/g, c => c
+                            .toUpperCase());
 
                         resultsHTML += `
                         <li class="list-group-item bg-transparent px-0">
@@ -950,9 +991,10 @@
 
                     feedbackItems.forEach(feedbackText => {
                         const isPositive = feedbackText.toLowerCase().includes('great') ||
-                                            feedbackText.toLowerCase().includes('good') ||
-                                            feedbackText.toLowerCase().includes('perfect');
-                        const iconClass = isPositive ? 'bi-check-circle-fill text-success' : 'bi-exclamation-triangle-fill text-warning';
+                            feedbackText.toLowerCase().includes('good') ||
+                            feedbackText.toLowerCase().includes('perfect');
+                        const iconClass = isPositive ? 'bi-check-circle-fill text-success' :
+                            'bi-exclamation-triangle-fill text-warning';
 
                         resultsHTML += `
                         <li class="list-group-item bg-transparent px-0">
@@ -1004,9 +1046,11 @@
                 if (Array.isArray(data.meta_feedback)) {
                     data.meta_feedback.forEach(item => {
                         const iconClass = item.score >= 0.8 ? 'bi-check-circle-fill text-success' :
-                                        (item.score >= 0.5 ? 'bi-exclamation-triangle-fill text-warning' : 'bi-x-circle-fill text-danger');
+                            (item.score >= 0.5 ? 'bi-exclamation-triangle-fill text-warning' :
+                                'bi-x-circle-fill text-danger');
 
-                        const criteriaName = item.criteria.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                        const criteriaName = item.criteria.replace(/_/g, ' ').replace(/\b\w/g, c => c
+                            .toUpperCase());
 
                         resultsHTML += `
                         <li class="list-group-item bg-transparent px-0">
@@ -1029,9 +1073,10 @@
 
                     feedbackItems.forEach(feedbackText => {
                         const isPositive = feedbackText.toLowerCase().includes('great') ||
-                                            feedbackText.toLowerCase().includes('good') ||
-                                            feedbackText.toLowerCase().includes('perfect');
-                        const iconClass = isPositive ? 'bi-check-circle-fill text-success' : 'bi-exclamation-triangle-fill text-warning';
+                            feedbackText.toLowerCase().includes('good') ||
+                            feedbackText.toLowerCase().includes('perfect');
+                        const iconClass = isPositive ? 'bi-check-circle-fill text-success' :
+                            'bi-exclamation-triangle-fill text-warning';
 
                         resultsHTML += `
                         <li class="list-group-item bg-transparent px-0">
@@ -1083,9 +1128,11 @@
                 if (Array.isArray(data.content_feedback)) {
                     data.content_feedback.forEach(item => {
                         const iconClass = item.score >= 0.8 ? 'bi-check-circle-fill text-success' :
-                                        (item.score >= 0.5 ? 'bi-exclamation-triangle-fill text-warning' : 'bi-x-circle-fill text-danger');
+                            (item.score >= 0.5 ? 'bi-exclamation-triangle-fill text-warning' :
+                                'bi-x-circle-fill text-danger');
 
-                        const criteriaName = item.criteria.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                        const criteriaName = item.criteria.replace(/_/g, ' ').replace(/\b\w/g, c => c
+                            .toUpperCase());
 
                         resultsHTML += `
                         <li class="list-group-item bg-transparent px-0">
@@ -1108,8 +1155,9 @@
 
                     feedbackItems.forEach(feedbackText => {
                         const isPositive = feedbackText.toLowerCase().includes('great') ||
-                                            feedbackText.toLowerCase().includes('good');
-                        const iconClass = isPositive ? 'bi-check-circle-fill text-success' : 'bi-exclamation-triangle-fill text-warning';
+                            feedbackText.toLowerCase().includes('good');
+                        const iconClass = isPositive ? 'bi-check-circle-fill text-success' :
+                            'bi-exclamation-triangle-fill text-warning';
 
                         resultsHTML += `
                         <li class="list-group-item bg-transparent px-0">
@@ -1164,7 +1212,7 @@
                         // Animate to actual value
                         bar.style.width = bar.getAttribute('aria-valuenow') + '%';
                     });
-                    
+
                     // Add active class to score number for animation
                     const scoreNumbers = document.querySelectorAll('.score-number');
                     scoreNumbers.forEach(number => {
@@ -1250,47 +1298,49 @@
 
             // Submit to server
             fetch('{{ route('contents.store') }}', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(errorData => {
-                        throw { status: response.status, data: errorData };
-                    });
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success && data.redirect) {
-                    // Redirect to results page
-                    window.location.href = data.redirect;
-                } else {
-                    throw new Error(data.message || 'Unknown error occurred');
-                }
-            })
-            .catch(error => {
-                console.error('Error saving content:', error);
-                saveButton.innerHTML = originalText;
-                saveButton.disabled = false;
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(errorData => {
+                            throw {
+                                status: response.status,
+                                data: errorData
+                            };
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success && data.redirect) {
+                        // Redirect to results page
+                        window.location.href = data.redirect;
+                    } else {
+                        throw new Error(data.message || 'Unknown error occurred');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error saving content:', error);
+                    saveButton.innerHTML = originalText;
+                    saveButton.disabled = false;
 
-                let errorMsg = 'Error saving content';
-                if (error.data && error.data.message) {
-                    errorMsg = error.data.message;
-                } else if (error.message) {
-                    errorMsg = error.message;
-                }
+                    let errorMsg = 'Error saving content';
+                    if (error.data && error.data.message) {
+                        errorMsg = error.data.message;
+                    } else if (error.message) {
+                        errorMsg = error.message;
+                    }
 
-                showError(errorMsg);
-            });
+                    showError(errorMsg);
+                });
         }
     </script>
     <style>
 
     </style>
 @endsection
-
