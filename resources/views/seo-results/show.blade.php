@@ -122,11 +122,11 @@
                                 <i class="bi bi-pencil me-1"></i> Edit Content
                             </a>
                             <!-- <form action="{{ route('seo-results.reanalyze', $content->id) }}" method="POST" class="d-inline">
-                                    @csrf
-                                    <button type="submit" class="btn btn-outline-secondary">
-                                        <i class="bi bi-arrow-repeat me-1"></i> Reanalyze
-                                    </button>
-                                </form> -->
+                                        @csrf
+                                        <button type="submit" class="btn btn-outline-secondary">
+                                            <i class="bi bi-arrow-repeat me-1"></i> Reanalyze
+                                        </button>
+                                    </form> -->
                         </div>
                     </div>
                     <div class="card-body">
@@ -134,7 +134,8 @@
                             <div class="col-md-8">
                                 <h5 class="mb-3">{{ $content->title }}</h5>
                                 <p class="text-muted mb-2"><i class="bi bi-tag me-1"></i> Target Keyword:
-                                    <strong>{{ $content->target_keyword }}</strong></p>
+                                    <strong>{{ $content->target_keyword }}</strong>
+                                </p>
                                 <p class="mb-0"><i class="bi bi-calendar3 me-1"></i> Analysis Date:
                                     {{ $seoResult->created_at->format('M d, Y H:i') }}</p>
                             </div>
@@ -149,13 +150,15 @@
                                     @endphp
                                     <div class="score-container">
                                         <div class="score-value-display">
-                                            <span class="score-number score-{{ $ratingClass }}">{{ $score }}</span>
+                                            <span
+                                                class="score-number score-{{ $ratingClass }}">{{ number_format($score, 2) }}</span>
                                             <span class="score-percent">%</span>
                                         </div>
                                         <div class="progress score-progress">
                                             <div class="progress-bar bg-{{ $ratingClass }}" role="progressbar"
-                                                style="width: {{ round($score) }}%" aria-valuenow="{{ round($score) }}"
-                                                aria-valuemin="0" aria-valuemax="100">
+                                                style="width: {{ number_format($score, 2) }}%"
+                                                aria-valuenow="{{ number_format($score, 2) }}" aria-valuemin="0"
+                                                aria-valuemax="100">
                                             </div>
                                         </div>
                                         <p class="mt-2 fw-bold">
@@ -193,10 +196,11 @@
                                         </div>
                                         <div class="progress mb-3" style="height: 10px;">
                                             <div class="progress-bar bg-{{ $titleClass }}" role="progressbar"
-                                                style="width: {{ $titleScore }}%" aria-valuenow="{{ $titleScore }}"
-                                                aria-valuemin="0" aria-valuemax="100"></div>
+                                                style="width: {{ number_format($titleScore, 2) }}%"
+                                                aria-valuenow="{{ number_format($titleScore, 2) }}" aria-valuemin="0"
+                                                aria-valuemax="100"></div>
                                         </div>
-                                        <h5 class="text-{{ $titleClass }}">{{ number_format($titleScore, 1) }}%</h5>
+                                        <h5 class="text-{{ $titleClass }}">{{ number_format($titleScore, 2) }}%</h5>
                                     </div>
                                 </div>
                             </div>
@@ -215,10 +219,11 @@
                                         </div>
                                         <div class="progress mb-3" style="height: 10px;">
                                             <div class="progress-bar bg-{{ $metaClass }}" role="progressbar"
-                                                style="width: {{ $metaScore }}%" aria-valuenow="{{ $metaScore }}"
-                                                aria-valuemin="0" aria-valuemax="100"></div>
+                                                style="width: {{ number_format($metaScore, 2) }}%"
+                                                aria-valuenow="{{ number_format($metaScore, 2) }}" aria-valuemin="0"
+                                                aria-valuemax="100"></div>
                                         </div>
-                                        <h5 class="text-{{ $metaClass }}">{{ number_format($metaScore, 1) }}%</h5>
+                                        <h5 class="text-{{ $metaClass }}">{{ number_format($metaScore, 2) }}%</h5>
                                     </div>
                                 </div>
                             </div>
@@ -237,10 +242,11 @@
                                         </div>
                                         <div class="progress mb-3" style="height: 10px;">
                                             <div class="progress-bar bg-{{ $contentClass }}" role="progressbar"
-                                                style="width: {{ $contentScore }}%" aria-valuenow="{{ $contentScore }}"
-                                                aria-valuemin="0" aria-valuemax="100"></div>
+                                                style="width: {{ number_format($contentScore, 2) }}%"
+                                                aria-valuenow="{{ number_format($contentScore, 2) }}" aria-valuemin="0"
+                                                aria-valuemax="100"></div>
                                         </div>
-                                        <h5 class="text-{{ $contentClass }}">{{ number_format($contentScore, 1) }}%</h5>
+                                        <h5 class="text-{{ $contentClass }}">{{ number_format($contentScore, 2) }}%</h5>
                                     </div>
                                 </div>
                             </div>

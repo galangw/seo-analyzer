@@ -828,7 +828,7 @@
                         <div class="text-center mb-4">
                             <div class="score-container">
                                 <div class="score-value-display">
-                                    <span class="score-number score-${scoreClass}">${score}</span>
+                                    <span class="score-number score-${scoreClass}">${score.toFixed(2)}</span>
                                     <span class="score-percent">%</span>
                                 </div>
                                 <div class="progress score-progress">
@@ -856,7 +856,7 @@
                                             <div class="progress-bar bg-${titleScoreClass}" role="progressbar" style="width: ${titleScore}%"
                                                 aria-valuenow="${titleScore}" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <p class="small mb-0">${titleScore}%</p>
+                                        <p class="small mb-0">${titleScore.toFixed(2)}%</p>
                                     </div>
                                 </div>
                             </div>
@@ -868,7 +868,7 @@
                                             <div class="progress-bar bg-${metaScoreClass}" role="progressbar" style="width: ${metaScore}%"
                                                 aria-valuenow="${metaScore}" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <p class="small mb-0">${data.meta_score}%</p>
+                                        <p class="small mb-0">${Number(data.meta_score).toFixed(2)}%</p>
                                     </div>
                                 </div>
                             </div>
@@ -880,7 +880,7 @@
                                             <div class="progress-bar bg-${contentScoreClass}" role="progressbar" style="width: ${data.content_score}%"
                                                 aria-valuenow="${data.content_score}" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <p class="small mb-0">${data.content_score}%</p>
+                                        <p class="small mb-0">${Number(data.content_score).toFixed(2)}%</p>
                                     </div>
                                 </div>
                             </div>

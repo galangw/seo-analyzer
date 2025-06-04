@@ -17,24 +17,24 @@
                         <div class="row g-4">
                             <!-- 1. Total Content per User -->
                             <div class="col-md-6 ">
-                                <div class="p-4 rounded text-center border " >
+                                <div class="p-4 rounded text-center border ">
                                     <i class="bi bi-file-earmark-text display-4 text-primary mb-3"></i>
                                     <h3 class="fs-4">{{ $totalContent }}</h3>
                                     <p class="text-body-secondary">Total Content</p>
                                 </div>
                             </div>
-                            
+
                             <!-- 2. Average Overall Score -->
                             <div class="col-md-6">
                                 <div class="p-4 rounded text-center border">
                                     <i class="bi bi-graph-up display-4 text-primary mb-3"></i>
-                            
+
                                     <h3 class="fs-4 ">{{ $thismonthContent }}</h3>
                                     <p class="text-body-secondary">This Month Contents</p>
                                 </div>
                             </div>
-                            
-                            
+
+
                         </div>
                     </div>
                 </div>
@@ -68,26 +68,26 @@
                         </h5>
                     </div>
                     <div class="card-body">
-                        @if(count($topKeywords) > 0)
+                        @if (count($topKeywords) > 0)
                             <div class="d-flex flex-column gap-2">
-                                @foreach($topKeywords as $keyword)
+                                @foreach ($topKeywords as $keyword)
                                     <div class="p-2 border rounded">
                                         <a class="text-decoration-none " href="/contents?search={{ $keyword['word'] }}">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span class="fw-medium"> {{ $keyword['word'] }}</span>
-                                            <span class="badge bg-primary rounded-pill text-dark">{{ $keyword['count'] }}</span>
-                                        </div>
-                                        <div class="progress mt-2" style="height: 6px;">
-                                            @php
-                                                $maxCount = $topKeywords[0]['count'];
-                                                $percentage = ($keyword['count'] / $maxCount) * 100;
-                                            @endphp
-                                            <div class="progress-bar" role="progressbar" 
-                                                style="width: {{ $percentage }}%" 
-                                                aria-valuenow="{{ $percentage }}" 
-                                                aria-valuemin="0" 
-                                                aria-valuemax="100"></div>
-                                        </div></a>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span class="fw-medium"> {{ $keyword['word'] }}</span>
+                                                <span
+                                                    class="badge bg-primary rounded-pill text-dark">{{ $keyword['count'] }}</span>
+                                            </div>
+                                            <div class="progress mt-2" style="height: 6px;">
+                                                @php
+                                                    $maxCount = $topKeywords[0]['count'];
+                                                    $percentage = ($keyword['count'] / $maxCount) * 100;
+                                                @endphp
+                                                <div class="progress-bar" role="progressbar"
+                                                    style="width: {{ $percentage }}%" aria-valuenow="{{ $percentage }}"
+                                                    aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </a>
                                     </div>
                                 @endforeach
                             </div>
@@ -158,7 +158,7 @@
                                                                     aria-valuemax="100"></div>
                                                             </div>
                                                             <span class="badge bg-{{ $scoreClass }}">
-                                                                {{ number_format($score, 1) }}%
+                                                                {{ number_format($score, 2) }}%
                                                             </span>
                                                         </div>
                                                     @else
@@ -205,31 +205,32 @@
         </div>
     </div>
 
-   
+
 @endsection
 @section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Setup chart theme based on current theme
-            let chartTextColor = document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#f8f9fa' : '#212529';
-            let chartGridColor = document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
-            
+            let chartTextColor = document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#f8f9fa' :
+                '#212529';
+            let chartGridColor = document.documentElement.getAttribute('data-bs-theme') === 'dark' ?
+                'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+
             // Set up chart data
             const contentData = @json($dailyContentStats);
-            
+
             const dates = contentData.map(item => item.date);
             const contentCounts = contentData.map(item => item.content_count);
             const analyzedCounts = contentData.map(item => item.analyzed_count);
-            
+
             // Initialize chart
             const ctx = document.getElementById('contentActivityChart').getContext('2d');
             new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: dates,
-                    datasets: [
-                        {
+                    datasets: [{
                             label: 'Contents Created',
                             data: contentCounts,
                             borderColor: '#0d6efd',
@@ -282,23 +283,25 @@
                     }
                 }
             });
-            
+
             // Update chart colors when theme changes
             document.querySelector('.theme-toggle').addEventListener('click', function() {
                 setTimeout(() => {
                     const chart = Chart.getChart(ctx);
-                    let newTextColor = document.documentElement.getAttribute('data-bs-theme') === 'dark' ? '#f8f9fa' : '#212529';
-                    let newGridColor = document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
-                    
+                    let newTextColor = document.documentElement.getAttribute('data-bs-theme') ===
+                        'dark' ? '#f8f9fa' : '#212529';
+                    let newGridColor = document.documentElement.getAttribute('data-bs-theme') ===
+                        'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+
                     chart.options.plugins.legend.labels.color = newTextColor;
                     chart.options.scales.y.ticks.color = newTextColor;
                     chart.options.scales.x.ticks.color = newTextColor;
                     chart.options.scales.y.grid.color = newGridColor;
                     chart.options.scales.x.grid.color = newGridColor;
-                    
+
                     chart.update();
                 }, 100);
             });
         });
     </script>
-    @endsection
+@endsection

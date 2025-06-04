@@ -309,7 +309,7 @@
             // Make sure Quill is available before initializing
             if (typeof Quill === 'undefined') {
                 console.error(
-                'Quill library not loaded. Check network connections or add a direct script include.');
+                    'Quill library not loaded. Check network connections or add a direct script include.');
                 return;
             }
 
@@ -881,7 +881,7 @@
                         <div class="text-center mb-4">
                             <div class="score-container">
                                 <div class="score-value-display">
-                                    <span class="score-number score-${scoreClass}">${overallScore}</span>
+                                    <span class="score-number score-${scoreClass}">${overallScore.toFixed(2)}</span>
                                     <span class="score-percent">%</span>
                                 </div>
                                 <div class="progress score-progress">
@@ -911,7 +911,7 @@
                                             <div class="progress-bar bg-${titleScoreClass}" role="progressbar" style="width: ${Math.round(titleScore)}%"
                                                 aria-valuenow="${Math.round(titleScore)}" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <p class="small mb-0 text-${titleScoreClass} fw-bold">${Math.round(titleScore)}%</p>
+                                        <p class="small mb-0 text-${titleScoreClass} fw-bold">${titleScore.toFixed(2)}%</p>
                                     </div>
                                 </div>
                             </div>
@@ -925,7 +925,7 @@
                                             <div class="progress-bar bg-${metaScoreClass}" role="progressbar" style="width: ${Math.round(metaScore)}%"
                                                 aria-valuenow="${Math.round(metaScore)}" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <p class="small mb-0 text-${metaScoreClass} fw-bold">${Math.round(metaScore)}%</p>
+                                        <p class="small mb-0 text-${metaScoreClass} fw-bold">${metaScore.toFixed(2)}%</p>
                                     </div>
                                 </div>
                             </div>
@@ -939,7 +939,7 @@
                                             <div class="progress-bar bg-${contentScoreClass}" role="progressbar" style="width: ${Math.round(contentScore)}%"
                                                 aria-valuenow="${Math.round(contentScore)}" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
-                                        <p class="small mb-0 text-${contentScoreClass} fw-bold">${Math.round(contentScore)}%</p>
+                                        <p class="small mb-0 text-${contentScoreClass} fw-bold">${contentScore.toFixed(2)}%</p>
                                     </div>
                                 </div>
                             </div>

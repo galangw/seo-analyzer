@@ -10,14 +10,17 @@
                             <h5 class="mb-0">My Content</h5>
                             <div class="d-flex gap-2 flex-grow-1 flex-md-grow-0 mt-2 mt-md-0">
                                 <!-- Search Form -->
-                                <form action="{{ route('contents.index') }}" method="GET" class="d-flex align-items-center ms-auto me-2">
+                                <form action="{{ route('contents.index') }}" method="GET"
+                                    class="d-flex align-items-center ms-auto me-2">
                                     <div class="input-group">
-                                        <input type="text" name="search" class="form-control form-control-sm" placeholder="Search by title or keyword" value="{{ request('search') }}">
+                                        <input type="text" name="search" class="form-control form-control-sm"
+                                            placeholder="Search by title or keyword" value="{{ request('search') }}">
                                         <button class="btn btn-sm btn-outline-primary" type="submit">
                                             <i class="bi bi-search"></i>
                                         </button>
-                                        @if(request('search'))
-                                            <a href="{{ route('contents.index') }}" class="btn btn-sm btn-outline-secondary">
+                                        @if (request('search'))
+                                            <a href="{{ route('contents.index') }}"
+                                                class="btn btn-sm btn-outline-secondary">
                                                 <i class="bi bi-x-circle"></i>
                                             </a>
                                         @endif
@@ -28,14 +31,16 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        @if(request('search'))
+                        @if (request('search'))
                             <div class="alert alert-info mb-3">
                                 <i class="bi bi-search me-2"></i>
-                                <strong>{{ $contents->total() }}</strong> {{ Str::plural('result', $contents->total()) }} found for "<strong>{{ request('search') }}</strong>"
-                                <a href="{{ route('contents.index') }}" class="ms-2 text-decoration-none"><i class="bi bi-x-circle"></i> Clear</a>
+                                <strong>{{ $contents->total() }}</strong> {{ Str::plural('result', $contents->total()) }}
+                                found for "<strong>{{ request('search') }}</strong>"
+                                <a href="{{ route('contents.index') }}" class="ms-2 text-decoration-none"><i
+                                        class="bi bi-x-circle"></i> Clear</a>
                             </div>
                         @endif
-                        
+
                         @if ($contents->count() > 0)
                             <div class="table-responsive">
                                 <table class="table table-hover">
@@ -71,7 +76,7 @@
                                                                     aria-valuenow="{{ $score }}" aria-valuemin="0"
                                                                     aria-valuemax="100"></div>
                                                             </div>
-                                                            <span>{{ number_format($score, 1) }}%</span>
+                                                            <span>{{ number_format($score, 2) }}%</span>
                                                         </div>
                                                     @else
                                                         <span class="badge bg-secondary">Not analyzed</span>
@@ -112,9 +117,10 @@
                             </div>
                         @else
                             <div class="text-center p-4">
-                                @if(request('search'))
+                                @if (request('search'))
                                     <p>No results found for "{{ request('search') }}".</p>
-                                    <a href="{{ route('contents.index') }}" class="btn btn-outline-secondary">Clear Search</a>
+                                    <a href="{{ route('contents.index') }}" class="btn btn-outline-secondary">Clear
+                                        Search</a>
                                 @else
                                     <p>You haven't analyzed any content yet.</p>
                                     <a href="{{ route('contents.create') }}" class="btn btn-primary">Analyze Your First
@@ -130,7 +136,5 @@
 @endsection
 
 @section('scripts')
-<script>
-   
-</script>
+    <script></script>
 @endsection
